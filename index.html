@@ -57,6 +57,12 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
 @keyframes ob{0%,100%{transform:translate(0,0) scale(1)}35%{transform:translate(-26px,22px) scale(1.1)}70%{transform:translate(20px,-28px) scale(.94)}}
 @keyframes oc{0%,100%{transform:translate(-50%,-50%) scale(1)}50%{transform:translate(-46%,-54%) scale(1.22)}}
 
+/* ══ VIGNETTE cinematografica ══ */
+#vignette{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(125% 100% at 50% 32%,transparent 52%,rgba(0,0,0,.5) 100%),
+    radial-gradient(90% 60% at 50% 0%,rgba(255,255,255,.04),transparent 60%)}
+
 #app{height:100%;display:flex;flex-direction:column;max-width:430px;margin:0 auto;position:relative;z-index:1;overflow:hidden}
 
 /* ══ SCREENS ══ */
@@ -89,8 +95,13 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
 .hero{padding:max(52px,env(safe-area-inset-top)) 22px 0;
   background:linear-gradient(168deg,rgba(255,255,255,.16) 0%,rgba(200,200,210,.07) 40%,transparent 74%);
   position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:10px;left:-8%;width:62%;height:200px;z-index:0;
+  background:radial-gradient(circle,rgba(255,255,255,.16),transparent 68%);
+  filter:blur(18px);pointer-events:none;animation:heroPulse 7.5s ease-in-out infinite}
+.hero-label,.hero-row{position:relative;z-index:2}
+@keyframes heroPulse{0%,100%{opacity:.45;transform:translateY(0) scale(1)}50%{opacity:.85;transform:translateY(8px) scale(1.06)}}
 .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;
-  background:linear-gradient(transparent,#070708);pointer-events:none}
+  background:linear-gradient(transparent,#070708);pointer-events:none;z-index:1}
 .hero-label{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:1px;
   text-transform:uppercase;font-weight:500;margin-bottom:10px}
 .hero-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
@@ -498,6 +509,7 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
 </head>
 <body>
 <div id="orbs"><div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div><div class="orb o4"></div></div>
+<div id="vignette"></div>
 
 <div id="app">
   <div id="screens">
@@ -1135,9 +1147,21 @@ function setPP(n,el){PP=n;document.querySelectorAll('.ptab').forEach(b=>b.classL
 function renderProjChart(){
   const tx=S.tx,subs=S.subs.filter(s=>s.on);
   const subsM=subs.reduce((a,s)=>a+s.amount,0);
+  const recM=S.recurring.filter(r=>r.active).reduce((a,r)=>a+r.amount,0);
   let bal=tx.filter(t=>t.type==='income').reduce((a,t)=>a+t.amount,0)-tx.filter(t=>t.type==='expense').reduce((a,t)=>a+t.amount,0);
-  const now=new Date(),L=[],D=[];
-  for(let i=0;i<PP;i++){const d=new Date(now.getFullYear(),now.getMonth()+i,1);L.push(MN[d.getMonth()]);if(i>0)bal-=subsM;D.push(Math.round(bal));}
+  // Spesa media mensile (ultimi 3 mesi completi, escluse spese da abbonamento per non contarle due volte)
+  const now=new Date();
+  let expSum=0,expMonths=0;
+  for(let k=1;k<=3;k++){
+    const d=new Date(now.getFullYear(),now.getMonth()-k,1),mk=d.toISOString().slice(0,7);
+    const m=tx.filter(t=>t.type==='expense'&&!t.subId&&t.date?.startsWith(mk)).reduce((a,t)=>a+t.amount,0);
+    expSum+=m;expMonths++;
+  }
+  const avgExp=expMonths?expSum/expMonths:0;
+  // Variazione netta mensile prevista: entrate ricorrenti − abbonamenti − spesa media
+  const net=recM-subsM-avgExp;
+  const L=[],D=[];
+  for(let i=0;i<PP;i++){const d=new Date(now.getFullYear(),now.getMonth()+i,1);L.push(MN[d.getMonth()]);if(i>0)bal+=net;D.push(Math.round(bal));}
   const ctx=document.getElementById('cProj').getContext('2d');
   if(projChart)projChart.destroy();
   const g=ctx.createLinearGradient(0,0,0,155);g.addColorStop(0,'rgba(232,234,240,.22)');g.addColorStop(1,'rgba(232,234,240,0)');
