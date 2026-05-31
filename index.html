@@ -318,6 +318,14 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
 .donut-wrap{height:130px;position:relative}
 .bars-wrap{height:130px;position:relative}
 .chart-sub{font-size:12px;color:var(--t3);font-weight:500}
+/* backup */
+.backup-box{display:flex;flex-direction:column;gap:9px;padding:0 20px}
+.bk-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:13px;border-radius:14px;
+  background:var(--g1);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--gb);color:var(--t1);font-size:14px;font-weight:500;cursor:pointer;
+  box-shadow:var(--gs);transition:.14s;font-family:inherit;width:100%}
+.bk-btn:active{transform:scale(.985);background:rgba(255,255,255,.1)}
+.bk-note{font-size:11px;color:var(--t3);line-height:1.5;padding:4px 2px 0}
 /* savings rate */
 .srate-card{margin:14px 20px 0;border-radius:var(--r);padding:15px 16px;
   background:var(--g1);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
@@ -469,8 +477,10 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
 .det-actions{display:flex;gap:10px;padding:0 22px}
 .da-btn{flex:1;padding:13px;border-radius:13px;border:none;font-size:14px;font-weight:600;cursor:pointer;transition:.13s}
 .da-btn:active{transform:scale(.97)}
+.da-edit{background:rgba(232,234,240,.12);color:var(--t1);border:1px solid var(--gb)}
 .da-dup{background:rgba(255,255,255,.06);color:var(--t1);border:1px solid rgba(255,255,255,.1)}
 .da-del{background:rgba(248,113,113,.1);color:var(--neg);border:1px solid rgba(248,113,113,.16)}
+.da-btn{font-size:13px}
 .da-close-bg{position:absolute;inset:0;z-index:-1}
 
 /* ══ GOAL MODAL ══ */
@@ -633,6 +643,15 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
 
         <div class="sec">Dettaglio categorie</div>
         <div id="st-cats"></div>
+
+        <div class="sec">Dati &amp; backup</div>
+        <div class="backup-box">
+          <button class="bk-btn" onclick="exportBackup()">⬇&#65038;&nbsp; Esporta backup (.json)</button>
+          <button class="bk-btn" onclick="document.getElementById('importFile').click()">⬆&#65038;&nbsp; Importa backup</button>
+          <button class="bk-btn" onclick="exportCSV()">📄&nbsp; Esporta movimenti (.csv)</button>
+          <input type="file" id="importFile" accept="application/json,.json" style="display:none" onchange="importBackup(event)">
+          <div class="bk-note">I tuoi dati restano solo sul telefono. Esporta ogni tanto un backup per non perderli se cambi dispositivo o reinstalli l'app.</div>
+        </div>
       </div>
     </div>
 
@@ -691,7 +710,8 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
     <div class="det-rows" id="d-rows"></div>
     <div class="det-recreate"><div class="drec-label">📋 Ricrea transazione</div><div id="d-recreate"></div></div>
     <div class="det-actions">
-      <button class="da-btn da-dup" onclick="dupTx()">Duplica oggi</button>
+      <button class="da-btn da-edit" onclick="editTx()">Modifica</button>
+      <button class="da-btn da-dup" onclick="dupTx()">Duplica</button>
       <button class="da-btn da-del" onclick="delFromDetail()">Elimina</button>
     </div>
   </div>
@@ -814,10 +834,12 @@ function goTab(name,el){
 // ═══════════════════════════════════════════════════════════════════
 // ADD OVERLAY
 // ═══════════════════════════════════════════════════════════════════
-let curT='expense',curC='food';
+let curT='expense',curC='food',editId=null;
+function buzz(ms){try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
 
 function toggleOv(){document.getElementById('overlay').classList.contains('open')?closeOv():openOv();}
 function openOv(){
+  editId=null;
   curT='expense';curC='food';
   document.getElementById('amt').value='';
   document.getElementById('f-note').value='';
@@ -830,7 +852,24 @@ function openOv(){
   document.getElementById('fab').classList.add('open');
   // Niente autofocus: apriva la tastiera e spostava la vista. L'utente tocca il campo.
 }
+function editTx(){
+  const tx=S.tx.find(t=>t.id==detId);if(!tx)return;
+  closeDetail();
+  editId=tx.id;
+  curT=tx.type;curC=tx.cat;
+  document.getElementById('amt').value=tx.amount;
+  document.getElementById('f-note').value=tx.note||'';
+  document.getElementById('f-date').value=tx.date||today();
+  document.getElementById('f-renew').value='';
+  document.getElementById('f-day').value='';
+  syncType();renderCatGrid();
+  document.getElementById('ov-title').textContent=tx.type==='income'?'Modifica entrata':'Modifica spesa';
+  document.getElementById('overlay').scrollTop=0;
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('fab').classList.add('open');
+}
 function closeOv(){
+  editId=null;
   document.getElementById('overlay').classList.remove('open');
   document.getElementById('fab').classList.remove('open');
 }
@@ -864,6 +903,18 @@ function doSave(){
   const amt=parseFloat(document.getElementById('amt').value);
   if(!amt||amt<=0){toast('Inserisci un importo valido');return;}
   const note=document.getElementById('f-note').value.trim()||cL(curT,curC);
+  // MODIFICA di un movimento esistente (solo spesa/entrata)
+  if(editId!==null&&(curT==='expense'||curT==='income')){
+    const date=document.getElementById('f-date').value||today();
+    const t=S.tx;const i=t.findIndex(x=>x.id==editId);
+    if(i>-1){t[i]={...t[i],type:curT,amount:amt,cat:curC,note,date};S.tx=t;}
+    buzz(15);editId=null;closeOv();renderDash();
+    const c=document.querySelector('.scr.on');
+    if(c&&c.id==='s-tx')renderTx();
+    toast('Modifica salvata ✓');
+    return;
+  }
+  editId=null;
   if(curT==='subscription'){
     const renewal=document.getElementById('f-renew').value||today();
     const s=S.subs;s.unshift({id:Date.now(),name:note,amount:amt,cat:curC,renewal,on:true});S.subs=s;
@@ -879,7 +930,7 @@ function doSave(){
     const t=S.tx;t.unshift({id:Date.now(),type:curT,amount:amt,cat:curC,note,date});S.tx=t;
     toast(curT==='income'?'Entrata aggiunta ✓':'Spesa aggiunta ✓');
   }
-  closeOv();renderDash();
+  buzz(15);closeOv();renderDash();
   const cur=document.querySelector('.scr.on');
   if(cur&&cur.id==='s-subs')renderSubs();
   if(cur&&cur.id==='s-income')renderIncome();
@@ -1463,6 +1514,57 @@ function setBudget(catId){
   if(val===null)return;
   const n=parseFloat(val);if(isNaN(n)||n<=0){toast('Importo non valido');return;}
   const b=S.budgets;b[catId]=n;S.budgets=b;renderStats();toast('Budget aggiornato ✓');
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// BACKUP / EXPORT / IMPORT
+// ═══════════════════════════════════════════════════════════════════
+const BK_KEYS=['fin_tx','fin_subs','fin_recurring','fin_goal','fin_budgets'];
+function download(name,content,mime){
+  const blob=new Blob([content],{type:mime});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');a.href=url;a.download=name;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function exportBackup(){
+  const data={_app:'Finance',_version:9,_exportedAt:new Date().toISOString()};
+  BK_KEYS.forEach(k=>data[k]=localStorage.getItem(k));
+  download('finance-backup-'+today()+'.json',JSON.stringify(data,null,2),'application/json');
+  toast('Backup esportato ✓');
+}
+function importBackup(e){
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{
+    try{
+      const data=JSON.parse(r.result);
+      if(data.fin_tx===undefined&&data.fin_subs===undefined){toast('File di backup non valido');return;}
+      if(!confirm('Importare il backup? I dati attuali verranno sostituiti.')){e.target.value='';return;}
+      BK_KEYS.forEach(k=>{if(data[k]!=null)localStorage.setItem(k,data[k]);});
+      localStorage.setItem('fin_v9','1');
+      toast('Backup importato ✓');
+      setTimeout(()=>location.reload(),600);
+    }catch(err){toast('Errore nel file');}
+    e.target.value='';
+  };
+  r.readAsText(f);
+}
+function exportCSV(){
+  const tx=S.tx.slice().sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  if(!tx.length){toast('Nessun movimento da esportare');return;}
+  const esc=v=>'"'+String(v==null?'':v).replace(/"/g,'""')+'"';
+  const head=['Data','Tipo','Categoria','Descrizione','Importo (€)'];
+  const rows=tx.map(t=>[
+    t.date,
+    t.type==='income'?'Entrata':'Spesa',
+    cL(t.type,t.cat),
+    t.note,
+    (t.type==='income'?'':'-')+String(t.amount).replace('.',',')
+  ].map(esc).join(';'));
+  const csv='﻿'+[head.map(esc).join(';')].concat(rows).join('\r\n');
+  download('movimenti-'+today()+'.csv',csv,'text/csv;charset=utf-8');
+  toast('CSV esportato ✓');
 }
 
 // ═══════════════════════════════════════════════════════════════════
