@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16161b"/>
+      <stop offset="1" stop-color="#070708"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/>
+      <stop offset="0.45" stop-color="#ffffff" stop-opacity="0.10"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.30"/>
+    </linearGradient>
+    <linearGradient id="iri" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b496ff"/>
+      <stop offset="0.5" stop-color="#7fe6d8"/>
+      <stop offset="1" stop-color="#ffb4d6"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- dark rounded base -->
+  <rect width="192" height="192" rx="46" fill="url(#bg)"/>
+
+  <!-- iridescent halo behind glass -->
+  <circle cx="96" cy="96" r="60" fill="url(#iri)" opacity="0.18"/>
+
+  <!-- glass disc -->
+  <circle cx="96" cy="96" r="52" fill="url(#glass)" stroke="url(#iri)" stroke-width="2" stroke-opacity="0.7"/>
+  <circle cx="96" cy="96" r="52" fill="none" stroke="#ffffff" stroke-opacity="0.45" stroke-width="1"/>
+
+  <!-- top highlight / reflection -->
+  <ellipse cx="80" cy="68" rx="34" ry="17" fill="url(#sheen)" opacity="0.5"/>
+
+  <!-- euro mark, thin and elegant -->
+  <text x="96" y="129" text-anchor="middle" font-family="-apple-system, 'SF Pro Display', Helvetica, Arial, sans-serif"
+        font-size="78" font-weight="200" fill="#ffffff" fill-opacity="0.92">€</text>
+</svg>

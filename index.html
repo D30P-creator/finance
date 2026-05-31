@@ -370,9 +370,10 @@ html,body{height:100%;overflow:hidden;color:var(--t1);
 #fab.open svg{stroke:rgba(255,255,255,.8)}
 
 /* ══ ADD OVERLAY ══ */
-#overlay{position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.92);
+#overlay{position:fixed;inset:0;z-index:200;width:100%;max-width:100vw;background:rgba(0,0,0,.92);
   backdrop-filter:blur(48px);-webkit-backdrop-filter:blur(48px);
-  display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:none;
+  display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:none;
   transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1)}
 #overlay::-webkit-scrollbar{display:none}
 #overlay.open{transform:none}

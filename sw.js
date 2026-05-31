@@ -1,6 +1,6 @@
 // Bump questa versione a ogni aggiornamento dei file per forzare il refresh.
-const CACHE = 'finance-v2';
-const ASSETS = ['./index.html', './quick-add.html', './manifest.json'];
+const CACHE = 'finance-v3';
+const ASSETS = ['./index.html', './quick-add.html', './manifest.json', './icon.svg'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
