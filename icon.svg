@@ -1,39 +1,75 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#16161b"/>
-      <stop offset="1" stop-color="#070708"/>
+      <stop offset="0" stop-color="#0e1424"/>
+      <stop offset="1" stop-color="#05070d"/>
     </linearGradient>
-    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="panel" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.22"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.06"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0.12"/>
+    </linearGradient>
+    <linearGradient id="rim" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#bcd4ff"/>
+      <stop offset="0.5" stop-color="#9fe9df"/>
+      <stop offset="1" stop-color="#bff7d0"/>
+    </linearGradient>
+    <linearGradient id="b1" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#2f6df0"/><stop offset="1" stop-color="#5aa0ff"/>
+    </linearGradient>
+    <linearGradient id="b2" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#2f8fe6" stop-opacity="0.95"/><stop offset="1" stop-color="#5fd0e6"/>
+    </linearGradient>
+    <linearGradient id="b3" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#1fb8a6"/><stop offset="1" stop-color="#4fe6cf"/>
+    </linearGradient>
+    <linearGradient id="b4" x1="0" y1="1" x2="0" y2="0">
+      <stop offset="0" stop-color="#1fc46e"/><stop offset="1" stop-color="#74f2a6"/>
+    </linearGradient>
+    <linearGradient id="gloss" x1="0" y1="0" x2="0.4" y2="1">
       <stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/>
-      <stop offset="0.45" stop-color="#ffffff" stop-opacity="0.10"/>
-      <stop offset="1" stop-color="#ffffff" stop-opacity="0.30"/>
-    </linearGradient>
-    <linearGradient id="iri" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#b496ff"/>
-      <stop offset="0.5" stop-color="#7fe6d8"/>
-      <stop offset="1" stop-color="#ffb4d6"/>
-    </linearGradient>
-    <linearGradient id="sheen" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.6"/>
       <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
     </linearGradient>
+    <filter id="glow" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="7" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softglow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
   </defs>
 
-  <!-- dark rounded base -->
-  <rect width="192" height="192" rx="46" fill="url(#bg)"/>
+  <!-- base -->
+  <rect width="512" height="512" rx="120" fill="url(#bg)"/>
 
-  <!-- iridescent halo behind glass -->
-  <circle cx="96" cy="96" r="60" fill="url(#iri)" opacity="0.18"/>
+  <!-- outer blue aura -->
+  <rect x="78" y="78" width="356" height="356" rx="92" fill="#3a7bff" opacity="0.22" filter="url(#softglow)"/>
 
-  <!-- glass disc -->
-  <circle cx="96" cy="96" r="52" fill="url(#glass)" stroke="url(#iri)" stroke-width="2" stroke-opacity="0.7"/>
-  <circle cx="96" cy="96" r="52" fill="none" stroke="#ffffff" stroke-opacity="0.45" stroke-width="1"/>
+  <!-- glass panel -->
+  <rect x="86" y="86" width="340" height="340" rx="86" fill="url(#panel)" stroke="url(#rim)" stroke-width="3" stroke-opacity="0.85"/>
+  <rect x="86" y="86" width="340" height="340" rx="86" fill="none" stroke="#ffffff" stroke-opacity="0.25" stroke-width="1.2"/>
 
-  <!-- top highlight / reflection -->
-  <ellipse cx="80" cy="68" rx="34" ry="17" fill="url(#sheen)" opacity="0.5"/>
+  <!-- diagonal gloss streak -->
+  <path d="M104 150 Q150 96 250 100 L150 420 Q104 360 104 250 Z" fill="url(#gloss)" opacity="0.45"/>
 
-  <!-- euro mark, thin and elegant -->
-  <text x="96" y="129" text-anchor="middle" font-family="-apple-system, 'SF Pro Display', Helvetica, Arial, sans-serif"
-        font-size="78" font-weight="200" fill="#ffffff" fill-opacity="0.92">€</text>
+  <!-- bars -->
+  <g filter="url(#glow)">
+    <rect x="138" y="300" width="52" height="96"  rx="16" fill="url(#b1)"/>
+    <rect x="208" y="258" width="52" height="138" rx="16" fill="url(#b2)"/>
+    <rect x="278" y="214" width="52" height="182" rx="16" fill="url(#b3)"/>
+    <rect x="348" y="156" width="52" height="240" rx="16" fill="url(#b4)"/>
+  </g>
+  <!-- bar inner highlights -->
+  <g fill="#ffffff" opacity="0.28">
+    <rect x="146" y="308" width="14" height="80"  rx="7"/>
+    <rect x="216" y="266" width="14" height="122" rx="7"/>
+    <rect x="286" y="222" width="14" height="166" rx="7"/>
+    <rect x="356" y="164" width="14" height="224" rx="7"/>
+  </g>
+
+  <!-- rising arrow -->
+  <g filter="url(#glow)" fill="none" stroke="#eaf2ff" stroke-width="17" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
+    <path d="M132 348 L214 280 L256 312 L350 196"/>
+    <path d="M312 188 L360 184 L356 232"/>
+  </g>
 </svg>
