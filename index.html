@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,interactive-widget=resizes-content">
 <meta name="theme-color" content="#070708">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -34,7 +34,7 @@
   /* Numbers */
   font-variant-numeric:tabular-nums;
 }
-html,body{height:100%;width:100%;overflow:hidden;overflow-x:hidden;color:var(--t1);position:fixed;
+html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:hidden;color:var(--t1);
   background:radial-gradient(135% 95% at 50% -10%,#26262b 0%,#141417 50%,#070708 100%);
   font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif}
 
@@ -265,7 +265,7 @@ html,body{height:100%;width:100%;overflow:hidden;overflow-x:hidden;color:var(--t
 .search-inner:focus-within{border-color:rgba(232,234,240,.4);background:rgba(232,234,240,.06);
   box-shadow:0 0 0 3px rgba(232,234,240,.07)}
 .si-icon{font-size:15px;opacity:.4;flex-shrink:0}
-.si-input{flex:1;background:transparent;border:none;color:var(--t1);font-size:14px;outline:none;font-family:inherit}
+.si-input{flex:1;min-width:0;background:transparent;border:none;color:var(--t1);font-size:16px;outline:none;font-family:inherit}
 .si-input::placeholder{color:var(--t3)}
 .si-clear{font-size:16px;color:var(--t3);background:none;border:none;cursor:pointer;padding:0;display:none}
 
@@ -407,7 +407,7 @@ html,body{height:100%;width:100%;overflow:hidden;overflow-x:hidden;color:var(--t
   border:1px solid var(--gb);transition:.18s}
 .ff:focus-within{border-color:rgba(232,234,240,.4);background:rgba(232,234,240,.06);box-shadow:0 0 0 3px rgba(232,234,240,.06)}
 .ff-label{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:5px}
-.ff input,.ff select{width:100%;background:transparent;border:none;color:var(--t1);font-size:15px;outline:none;font-family:inherit}
+.ff input,.ff select{width:100%;max-width:100%;background:transparent;border:none;color:var(--t1);font-size:16px;outline:none;font-family:inherit}
 .ff select option{background:#060f0d}
 .cat-section-label{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;padding:16px 22px 10px;font-weight:600}
 .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 22px 20px}
