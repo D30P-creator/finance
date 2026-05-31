@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Quick Add · Finance</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-font-smoothing:antialiased}
+:root{--bg:#000;--card:#0d0d0d;--border:#1e1e1e;--accent:#00BFA5;--text:#fff;--t2:#8a9ba8;--t3:#3d4f58;--red:#FF5252;--green:#69F0AE;--r:16px}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;overflow:hidden}
+body{display:flex;flex-direction:column;max-width:430px;margin:0 auto;padding:max(50px,env(safe-area-inset-top)) 0 max(24px,env(safe-area-inset-bottom))}
+
+.top-bar{display:flex;align-items:center;justify-content:space-between;padding:0 22px 20px}
+.top-bar h1{font-size:20px;font-weight:300;letter-spacing:-.3px}
+.back-btn{font-size:13px;color:var(--accent);background:transparent;border:none;cursor:pointer;padding:4px 0}
+
+.type-sel{display:flex;background:#0d0d0d;border-radius:24px;padding:4px;margin:0 22px 22px;border:1px solid var(--border)}
+.tb{flex:1;padding:11px 4px;border-radius:20px;border:none;background:transparent;font-size:13px;font-weight:500;cursor:pointer;transition:.2s;color:var(--t3)}
+.tb.exp{background:var(--red);color:#fff}
+.tb.inc{background:var(--green);color:#000}
+
+.amt-wrap{padding:0 22px 6px}
+.amt-row{display:flex;align-items:center;gap:6px;border-bottom:2px solid #1a1a1a;padding-bottom:10px;transition:.2s}
+.amt-row:focus-within{border-color:var(--accent)}
+.amt-sym{font-size:40px;font-weight:200;color:var(--t3)}
+.amt-in{flex:1;background:transparent;border:none;color:var(--text);font-size:56px;font-weight:200;letter-spacing:-2.5px;outline:none;font-family:inherit;padding:8px 0}
+.amt-in::placeholder{color:#222}
+
+.fields{padding:18px 22px 0;display:flex;flex-direction:column;gap:10px}
+.field{background:var(--card);border-radius:var(--r);padding:13px 16px;border:1px solid var(--border);transition:.2s}
+.field:focus-within{border-color:#1a4a45}
+.fl{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px;font-weight:600}
+.field input,.field select{width:100%;background:transparent;border:none;color:var(--text);font-size:15px;outline:none;font-family:inherit}
+.field select option{background:#111}
+
+.cats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:18px 22px 0}
+.cb{display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 4px;border-radius:14px;border:1px solid var(--border);background:transparent;cursor:pointer;transition:.18s}
+.cb.on{background:#00BFA518;border-color:var(--accent)}
+.cb em{font-size:22px;font-style:normal}
+.cb span{font-size:10px;color:var(--t3);font-weight:500}
+.cb.on span{color:var(--accent)}
+
+.save{margin:auto 22px 0;padding:17px;border-radius:var(--r);background:var(--accent);border:none;color:#000;font-size:16px;font-weight:700;cursor:pointer;width:calc(100% - 44px);box-shadow:0 4px 20px rgba(0,191,165,.25);transition:.15s;margin-top:20px}
+.save:active{transform:scale(.98)}
+
+/* SUCCESS */
+#success{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;opacity:0;pointer-events:none;transition:.3s;z-index:100}
+#success.show{opacity:1;pointer-events:all}
+.s-icon{width:72px;height:72px;border-radius:36px;background:#00BFA518;display:flex;align-items:center;justify-content:center;font-size:36px;animation:pop .4s cubic-bezier(.34,1.56,.64,1)}
+.s-text{font-size:18px;font-weight:300;color:var(--t2)}
+.s-amt{font-size:40px;font-weight:200;letter-spacing:-2px;color:var(--text)}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <h1 id="page-title">Nuova spesa</h1>
+  <button class="back-btn" onclick="window.location.href='index.html'">Apri app →</button>
+</div>
+
+<div class="type-sel">
+  <button class="tb exp" id="tb-e" onclick="setT('expense')">Spesa</button>
+  <button class="tb" id="tb-i" onclick="setT('income')">Entrata</button>
+</div>
+
+<div class="amt-wrap">
+  <div class="amt-row">
+    <span class="amt-sym">€</span>
+    <input class="amt-in" type="number" id="amt" inputmode="decimal" placeholder="0" min="0" step="0.01" autofocus>
+  </div>
+</div>
+
+<div class="fields">
+  <div class="field">
+    <div class="fl">Descrizione</div>
+    <input type="text" id="note" placeholder="es. Caffè, Spesa, Stipendio…" maxlength="50" autocomplete="off">
+  </div>
+  <div class="field">
+    <div class="fl">Data</div>
+    <input type="date" id="date">
+  </div>
+</div>
+
+<div class="cats" id="cats"></div>
+
+<button class="save" onclick="doSave()">Salva</button>
+
+<div id="success">
+  <div class="s-icon" id="s-ico">✓</div>
+  <div class="s-amt" id="s-amt">€0</div>
+  <div class="s-text" id="s-txt">Salvato</div>
+</div>
+
+<script>
+const CATS={
+  expense:[{id:'food',e:'🍔',l:'Cibo'},{id:'transport',e:'🚗',l:'Trasporti'},{id:'home',e:'🏠',l:'Casa'},{id:'health',e:'💊',l:'Salute'},{id:'shopping',e:'🛍️',l:'Shopping'},{id:'fun',e:'🎮',l:'Svago'},{id:'beauty',e:'💈',l:'Cura'},{id:'other',e:'📦',l:'Altro'}],
+  income:[{id:'salary',e:'💼',l:'Stipendio'},{id:'freelance',e:'💻',l:'Freelance'},{id:'gift',e:'🎁',l:'Regalo'},{id:'invest',e:'📈',l:'Invest.'},{id:'refund',e:'↩️',l:'Rimborso'},{id:'other',e:'💰',l:'Altro'}]
+};
+let curT='expense',curC='food';
+const p=new URLSearchParams(location.search);
+if(p.get('type')==='income'){curT='income';curC='salary';document.getElementById('tb-e').className='tb';document.getElementById('tb-i').className='tb inc';document.getElementById('page-title').textContent='Nuova entrata';}
+document.getElementById('date').value=new Date().toISOString().split('T')[0];
+function setT(t){
+  curT=t;curC=CATS[t][0].id;
+  document.getElementById('tb-e').className='tb'+(t==='expense'?' exp':'');
+  document.getElementById('tb-i').className='tb'+(t==='income'?' inc':'');
+  document.getElementById('page-title').textContent=t==='expense'?'Nuova spesa':'Nuova entrata';
+  renderCats();
+}
+function renderCats(){
+  const g=document.getElementById('cats');
+  g.innerHTML=CATS[curT].map(c=>`<button class="cb${c.id===curC?' on':''}" data-id="${c.id}"><em>${c.e}</em><span>${c.l}</span></button>`).join('');
+  g.onclick=e=>{const b=e.target.closest('.cb');if(!b)return;curC=b.dataset.id;g.querySelectorAll('.cb').forEach(x=>x.classList.remove('on'));b.classList.add('on');};
+}
+renderCats();
+function doSave(){
+  const amt=parseFloat(document.getElementById('amt').value);
+  if(!amt||amt<=0){document.getElementById('amt').focus();return;}
+  const note=document.getElementById('note').value.trim()||(CATS[curT].find(c=>c.id===curC)?.l||'');
+  const date=document.getElementById('date').value||new Date().toISOString().split('T')[0];
+  const tx=JSON.parse(localStorage.getItem('fin_tx')||'[]');
+  tx.unshift({id:Date.now(),type:curT,amount:amt,cat:curC,note,date});
+  localStorage.setItem('fin_tx',JSON.stringify(tx));
+  const s=document.getElementById('success');
+  document.getElementById('s-ico').textContent=curT==='expense'?'✓':'＋';
+  document.getElementById('s-amt').textContent='€'+amt.toLocaleString('it-IT',{minimumFractionDigits:0,maximumFractionDigits:2});
+  document.getElementById('s-txt').textContent=curT==='expense'?'Spesa salvata':'Entrata salvata';
+  s.classList.add('show');
+  setTimeout(()=>{s.classList.remove('show');document.getElementById('amt').value='';document.getElementById('note').value='';document.getElementById('amt').focus();},1800);
+}
+</script>
+</body>
+</html>

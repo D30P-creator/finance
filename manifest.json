@@ -1,0 +1,32 @@
+{
+  "name": "Finance",
+  "short_name": "Finance",
+  "description": "Gestione finanze personali",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#070708",
+  "theme_color": "#070708",
+  "orientation": "portrait",
+  "shortcuts": [
+    {
+      "name": "Aggiungi spesa",
+      "short_name": "Spesa",
+      "url": "./quick-add.html?type=expense",
+      "description": "Aggiungi una nuova spesa"
+    },
+    {
+      "name": "Aggiungi entrata",
+      "short_name": "Entrata",
+      "url": "./quick-add.html?type=income",
+      "description": "Aggiungi una nuova entrata"
+    }
+  ],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='44' fill='%23141417'/><text y='132' font-size='112' font-family='sans-serif' font-weight='300' text-anchor='middle' x='96' fill='%23ffffff'>€</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
