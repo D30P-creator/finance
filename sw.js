@@ -1,5 +1,5 @@
 // Bump questa versione a ogni aggiornamento dei file per forzare il refresh.
-const CACHE = 'finance-v7';
+const CACHE = 'finance-v8';
 const ASSETS = ['./index.html', './quick-add.html', './manifest.json', './icon.svg'];
 
 self.addEventListener('install', e => {
