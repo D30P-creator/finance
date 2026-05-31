@@ -78,7 +78,7 @@ html,body{height:100%;width:100%;overflow:hidden;overflow-x:hidden;color:var(--t
 .ni:active{transform:scale(.86)}
 .ni svg{width:22px;height:22px;fill:none;stroke:var(--t3);stroke-width:1.8;
   stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s}
-.ni span{font-size:10px;color:var(--t3);letter-spacing:.1px;transition:color .2s}
+.ni span{font-size:9.5px;color:var(--t3);letter-spacing:.1px;transition:color .2s;white-space:nowrap}
 .ni.on svg{stroke:var(--a)}
 .ni.on span{color:var(--a)}
 .ni-dot{position:absolute;bottom:2px;width:4px;height:4px;border-radius:2px;
@@ -372,8 +372,9 @@ html,body{height:100%;width:100%;overflow:hidden;overflow-x:hidden;color:var(--t
 #fab.open svg{stroke:rgba(255,255,255,.8)}
 
 /* ══ ADD OVERLAY ══ */
-#overlay{position:fixed;inset:0;z-index:200;width:100%;max-width:100vw;background:rgba(0,0,0,.92);
-  backdrop-filter:blur(48px);-webkit-backdrop-filter:blur(48px);
+#overlay{position:fixed;top:0;left:0;right:0;bottom:0;z-index:200;
+  width:100%;max-width:100vw;height:100vh;height:100dvh;min-height:100dvh;
+  background:#070708;
   display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;
   -webkit-overflow-scrolling:touch;touch-action:pan-y;scrollbar-width:none;
   transform:translateY(100%);transition:transform .32s cubic-bezier(.32,.72,0,1)}
@@ -568,13 +569,18 @@ html,body{height:100%;width:100%;overflow:hidden;overflow-x:hidden;color:var(--t
       </div>
     </div>
 
+    <!-- ══ ENTRATE REGOLARI ══ -->
+    <div class="scr" id="s-income">
+      <div class="pb">
+        <div class="page-header"><div class="ph-label">Entrate regolari</div><div class="ph-value" id="income-total">€0<span style="font-size:18px;color:var(--t3)"> /mese</span></div></div>
+        <div id="rec-list"></div>
+      </div>
+    </div>
+
     <!-- ══ ABBONAMENTI ══ -->
     <div class="scr" id="s-subs">
       <div class="pb">
-        <div class="page-header"><div class="ph-label">Ricorrenti</div><div class="ph-value" id="subs-net">€0<span style="font-size:18px;color:var(--t3)"> netto /mese</span></div></div>
-        <div class="sec">Entrate ricorrenti</div>
-        <div id="rec-list"></div>
-        <div class="sec">Abbonamenti<span id="subs-total" style="float:right;text-transform:none;letter-spacing:0;color:var(--neg);font-weight:600"></span></div>
+        <div class="page-header"><div class="ph-label">Abbonamenti</div><div class="ph-value" id="subs-total">€0<span style="font-size:18px;color:var(--t3)"> /mese</span></div></div>
         <div id="subs-list"></div>
       </div>
     </div>
@@ -622,7 +628,8 @@ html,body{height:100%;width:100%;overflow:hidden;overflow-x:hidden;color:var(--t
   <nav id="nav">
     <div class="ni on" onclick="goTab('dash',this)"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Home</span><div class="ni-dot"></div></div>
     <div class="ni" onclick="goTab('tx',this)"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg><span>Movimenti</span><div class="ni-dot"></div></div>
-    <div class="ni" onclick="goTab('subs',this)"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg><span>Abbonamenti</span><div class="ni-dot"></div></div>
+    <div class="ni" onclick="goTab('income',this)"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg><span>Entrate</span><div class="ni-dot"></div></div>
+    <div class="ni" onclick="goTab('subs',this)"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg><span>Abbonam.</span><div class="ni-dot"></div></div>
     <div class="ni" onclick="goTab('stats',this)"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Statistiche</span><div class="ni-dot"></div></div>
   </nav>
 </div>
@@ -786,6 +793,7 @@ function goTab(name,el){
   el.classList.add('on');
   if(name==='dash')renderDash();
   if(name==='tx')renderTx();
+  if(name==='income')renderIncome();
   if(name==='subs')renderSubs();
   if(name==='stats')renderStats();
 }
@@ -849,7 +857,7 @@ function doSave(){
   } else if(curT==='recurring'){
     let day=parseInt(document.getElementById('f-day').value)||1;
     day=Math.min(Math.max(day,1),28);
-    const r=S.recurring;r.unshift({id:'rec'+Date.now(),type:'income',amount:amt,cat:curC,note,day,active:true});S.recurring=r;
+    const r=S.recurring;r.unshift({id:'rec'+Date.now(),type:'income',amount:amt,cat:curC,note,day,active:true,start:nowMK()});S.recurring=r;
     processRecurring();
     toast('Entrata ricorrente aggiunta ✓');
   } else {
@@ -860,6 +868,7 @@ function doSave(){
   closeOv();renderDash();
   const cur=document.querySelector('.scr.on');
   if(cur&&cur.id==='s-subs')renderSubs();
+  if(cur&&cur.id==='s-income')renderIncome();
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -934,32 +943,41 @@ function processRecurring(){
   let subs = S.subs;
   let changed = false;
 
-  // 1. Ricorrenze mensili (stipendio, entrate fisse)
-  // Partono dal giorno corrente in poi — non retroattive
+  // 1. Entrate regolari (stipendio, entrate fisse)
+  // Backfill: da quando è stata creata (start) fino al mese corrente,
+  // registra ogni mese in cui il giorno previsto è già passato.
+  const curMonth = new Date(now.getFullYear(), now.getMonth(), 1);
   S.recurring.forEach(r => {
     if(!r.active) return;
-    // Solo per il mese corrente, se il giorno è arrivato
-    const dueThisMonth = new Date(now.getFullYear(), now.getMonth(), r.day);
-    if(dueThisMonth <= now){
-      const dueDateStr = dueThisMonth.toISOString().split('T')[0];
-      const monthKey = dueDateStr.slice(0,7);
-      const exists = tx.some(t =>
-        (t.recurringId === r.id || (t.cat === r.cat && t.note === r.note && t.type === r.type))
-        && t.date.startsWith(monthKey)
-      );
-      if(!exists){
-        tx.unshift({
-          id: Date.now() * 1000 + Math.floor(Math.random() * 1000),
-          type: r.type,
-          amount: r.amount,
-          cat: r.cat,
-          note: r.note,
-          date: dueDateStr,
-          recurringId: r.id,
-          auto: true
-        });
-        changed = true;
+    const day = Math.min(Math.max(r.day || 1, 1), 28);
+    // mese di partenza: r.start (YYYY-MM) oppure mese corrente
+    let cursor = r.start
+      ? new Date(+r.start.slice(0,4), +r.start.slice(5,7) - 1, 1)
+      : new Date(now.getFullYear(), now.getMonth(), 1);
+    while(cursor <= curMonth){
+      const due = new Date(cursor.getFullYear(), cursor.getMonth(), day);
+      if(due <= now){
+        const dueDateStr = due.toISOString().split('T')[0];
+        const monthKey = dueDateStr.slice(0,7);
+        const exists = tx.some(t =>
+          (t.recurringId === r.id || (t.cat === r.cat && t.note === r.note && t.type === r.type))
+          && t.date.startsWith(monthKey)
+        );
+        if(!exists){
+          tx.unshift({
+            id: Date.now() * 1000 + Math.floor(Math.random() * 1000),
+            type: r.type,
+            amount: r.amount,
+            cat: r.cat,
+            note: r.note,
+            date: dueDateStr,
+            recurringId: r.id,
+            auto: true
+          });
+          changed = true;
+        }
       }
+      cursor = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1);
     }
   });
 
@@ -1240,45 +1258,45 @@ function toggleRec(id){
   const r=S.recurring;const it=r.find(x=>x.id==id);if(!it)return;
   it.active=!it.active;S.recurring=r;
   if(it.active)processRecurring();
-  renderSubs();renderDash();
+  renderIncome();renderDash();
   toast(it.active?'Entrata attivata ✓':'Entrata in pausa');
 }
-function renderSubs(){
-  // Entrate ricorrenti
+function renderIncome(){
   const rec=S.recurring;
   const recTot=rec.filter(r=>r.active).reduce((a,r)=>a+r.amount,0);
+  document.getElementById('income-total').innerHTML=fmt(recTot)+'<span style="font-size:18px;color:var(--t3)"> /mese</span>';
   const rel=document.getElementById('rec-list');
   if(!rec.length){
-    rel.innerHTML='<div style="padding:0 20px 6px;color:var(--t3);font-size:13px">Nessuna entrata ricorrente. Premi + → Ricorr. per aggiungere lo stipendio.</div>';
-  } else {
-    rel.innerHTML=rec.map((r,i)=>{
-      const col=cC('income',r.cat),off=!r.active;
-      return`${i?'<div class="tx-divider"></div>':''}
-      <div class="sub-full" data-rid="${r.id}" style="${off?'opacity:.45':''}">
-        <div class="sf-ico" style="background:${col}18;box-shadow:0 2px 10px ${col}22">${cE('income',r.cat)}</div>
-        <div class="sf-body">
-          <div class="sf-name">${r.note}</div>
-          <div class="sf-date">Ogni mese · giorno ${r.day}${off?' · in pausa':''}</div>
-        </div>
-        <div class="sf-right">
-          <div class="sf-amt" style="color:var(--pos)">+${fmt(r.amount)}</div>
-          <div class="sf-per">/mese</div>
-        </div>
-      </div>`;}).join('');
-    rel.querySelectorAll('.sub-full[data-rid]').forEach(row=>{
-      row.addEventListener('click',()=>toggleRec(row.dataset.rid));
-      let t;const del=()=>{if(confirm('Eliminare questa entrata ricorrente?')){S.recurring=S.recurring.filter(x=>x.id!=row.dataset.rid);renderSubs();renderDash();toast('Eliminata');}};
-      row.addEventListener('touchstart',()=>{t=setTimeout(del,650)},{passive:true});
-      row.addEventListener('touchend',()=>clearTimeout(t));
-      row.addEventListener('mousedown',()=>{t=setTimeout(del,800)});
-      row.addEventListener('mouseup',()=>clearTimeout(t));
-    });
+    rel.innerHTML='<div class="empty-state">Nessuna entrata regolare.<br>Premi <b>+</b> → <b>Ricorr.</b> per aggiungere lo stipendio.</div>';
+    return;
   }
-
+  rel.innerHTML=rec.map((r,i)=>{
+    const col=cC('income',r.cat),off=!r.active;
+    return`${i?'<div class="tx-divider"></div>':''}
+    <div class="sub-full" data-rid="${r.id}" style="${off?'opacity:.45':''}">
+      <div class="sf-ico" style="background:${col}18;box-shadow:0 2px 10px ${col}22">${cE('income',r.cat)}</div>
+      <div class="sf-body">
+        <div class="sf-name">${r.note}</div>
+        <div class="sf-date">Ogni mese · giorno ${r.day}${off?' · in pausa':''}</div>
+      </div>
+      <div class="sf-right">
+        <div class="sf-amt" style="color:var(--pos)">+${fmt(r.amount)}</div>
+        <div class="sf-per">/mese</div>
+      </div>
+    </div>`;}).join('');
+  rel.querySelectorAll('.sub-full[data-rid]').forEach(row=>{
+    row.addEventListener('click',()=>toggleRec(row.dataset.rid));
+    let t;const del=()=>{if(confirm('Eliminare questa entrata regolare?')){S.recurring=S.recurring.filter(x=>x.id!=row.dataset.rid);renderIncome();renderDash();toast('Eliminata');}};
+    row.addEventListener('touchstart',()=>{t=setTimeout(del,650)},{passive:true});
+    row.addEventListener('touchend',()=>clearTimeout(t));
+    row.addEventListener('mousedown',()=>{t=setTimeout(del,800)});
+    row.addEventListener('mouseup',()=>clearTimeout(t));
+  });
+}
+function renderSubs(){
   const subs=S.subs.sort((a,b)=>new Date(a.renewal)-new Date(b.renewal));
   const tot=subs.filter(s=>s.on).reduce((a,s)=>a+s.amount,0);
-  document.getElementById('subs-total').textContent=tot?'−'+fmt(tot)+' /mese':'';
-  document.getElementById('subs-net').innerHTML=(recTot-tot>=0?'+':'−')+fmt(recTot-tot)+'<span style="font-size:18px;color:var(--t3)"> netto /mese</span>';
+  document.getElementById('subs-total').innerHTML=fmt(tot)+'<span style="font-size:18px;color:var(--t3)"> /mese</span>';
   const el=document.getElementById('subs-list');
   if(!subs.length){el.innerHTML='<div class="empty-state">Nessun abbonamento. Premi + per aggiungerne uno.</div>';return;}
   el.innerHTML=subs.map((s,i)=>{
