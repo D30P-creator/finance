@@ -327,26 +327,53 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
 .bk-btn:active{transform:scale(.985);background:rgba(255,255,255,.1)}
 .bk-note{font-size:11px;color:var(--t3);line-height:1.5;padding:4px 2px 0}
 /* consulente */
-.adv-score{margin:4px 20px 0;display:flex;align-items:center;gap:18px;padding:18px 20px}
-.adv-ring-wrap{position:relative;width:96px;height:96px;flex-shrink:0}
-.adv-ring{width:96px;height:96px;transform:rotate(-90deg)}
-.adv-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:8}
-.adv-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)}
-.adv-ring-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.adv-num{font-size:30px;font-weight:300;letter-spacing:-1px;line-height:1}
-.adv-num-l{font-size:11px;color:var(--t3);margin-top:1px}
-.adv-verdict{flex:1;min-width:0}
-.adv-vlabel{font-size:22px;font-weight:400;letter-spacing:-.5px}
-.adv-vsub{font-size:12px;color:var(--t3);margin-top:3px}
+.adv-hero{margin:4px 20px 0;display:flex;align-items:center;gap:18px;padding:20px;border-radius:var(--r);
+  position:relative;overflow:hidden;
+  background:radial-gradient(120% 130% at 12% 0%,rgba(255,255,255,.1),rgba(255,255,255,.04) 55%,transparent);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border:1px solid var(--gb);box-shadow:var(--gsh),var(--gs)}
+.adv-hero::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:var(--iri-soft);opacity:.85}
+.adv-ring-wrap{position:relative;width:108px;height:108px;flex-shrink:0}
+.adv-ring{width:108px;height:108px;transform:rotate(-90deg)}
+.adv-bg{fill:none;stroke:rgba(255,255,255,.07);stroke-width:8}
+.adv-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.3s cubic-bezier(.4,0,.2,1);
+  filter:drop-shadow(0 0 6px rgba(168,180,255,.5))}
+.adv-ring-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.adv-num{font-size:36px;font-weight:200;letter-spacing:-1.5px;line-height:1;
+  text-shadow:0 0 24px rgba(255,255,255,.25)}
+.adv-grade{font-size:13px;font-weight:700;letter-spacing:.5px}
+.adv-hero-r{flex:1;min-width:0}
+.adv-vlabel{font-size:21px;font-weight:400;letter-spacing:-.5px}
+.adv-vsub{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+.adv-summary{font-size:12.5px;color:var(--t2);line-height:1.5;margin-top:9px}
+/* priorità */
+.adv-prio{margin:14px 20px 0;border-radius:var(--r);padding:15px 16px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,color-mix(in srgb,var(--sev) 16%,transparent),rgba(255,255,255,.04));
+  border:1px solid color-mix(in srgb,var(--sev) 35%,var(--gb));
+  box-shadow:var(--gsh),0 0 24px -8px var(--sev);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.adv-prio-tag{font-size:10px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--sev);margin-bottom:8px}
+.adv-prio-row{display:flex;gap:13px;align-items:flex-start}
+.adv-prio-ico{font-size:26px;flex-shrink:0;line-height:1}
+.adv-prio-b{flex:1;min-width:0}
 .adv-503020{margin:0 20px;padding:16px}
-.adv-bar{display:flex;height:14px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,.06)}
-.adv-bar span{height:100%;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.adv-bar{display:flex;height:16px;border-radius:9px;overflow:hidden;background:rgba(255,255,255,.06)}
+.adv-bar span{height:100%;transition:width 1.1s cubic-bezier(.4,0,.2,1)}
 .adv-leg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:12px}
 .adv-leg span{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--t2)}
 .adv-leg i{width:9px;height:9px;border-radius:3px;flex-shrink:0}
 .adv-leg em{color:var(--t3);font-style:normal;font-size:10px}
+/* proiezioni */
+.adv-proj{display:flex;gap:12px;padding:0 20px}
+.adv-proj-c{flex:1;min-width:0;padding:14px;border-radius:var(--r)}
+.adv-proj-l{font-size:11px;color:var(--t3);text-transform:uppercase;letter-spacing:.4px;font-weight:500}
+.adv-proj-v{font-size:26px;font-weight:200;letter-spacing:-1px;margin:6px 0 8px}
+.adv-proj-s{font-size:11px;color:var(--t3);line-height:1.5}
+.adv-proj-s b{color:var(--t2)}
+.adv-proj-c .goal-bar{margin-bottom:8px}
+/* tips */
 .adv-tips{display:flex;flex-direction:column;gap:10px;padding:0 20px}
-.adv-tip{display:flex;gap:13px;padding:14px 15px;align-items:flex-start}
+.adv-tip{display:flex;gap:13px;padding:14px 15px 14px 16px;align-items:flex-start;position:relative}
+.adv-tip::after{content:'';position:absolute;left:0;top:10px;bottom:10px;width:3px;border-radius:0 3px 3px 0;background:var(--sev,var(--a))}
 .adv-tip-ico{font-size:20px;flex-shrink:0;line-height:1.2}
 .adv-tip-t{font-size:14px;font-weight:500;margin-bottom:3px}
 .adv-tip-x{font-size:12.5px;color:var(--t2);line-height:1.55}
@@ -1690,6 +1717,10 @@ function renderAdvisor(){
   const pmk=mk2(now.getFullYear(),now.getMonth()-1);
   const prevExp=tx.filter(t=>t.type==='expense'&&t.date?.startsWith(pmk)).reduce((a,t)=>a+t.amount,0);
   const trend=prevExp>0?(thisExp-prevExp)/prevExp:0;
+  const net=incM-expM;                 // risparmio mensile stimato
+  const emT=expM*3, emT6=expM*6;        // obiettivi fondo emergenza
+  const proj12=balance+net*12;          // saldo previsto tra 12 mesi
+  const emProg=emT>0?Math.min(balance/emT,1):1;
 
   // PUNTEGGIO 0-100
   let score=0;
@@ -1700,45 +1731,86 @@ function renderAdvisor(){
   score+= trend<=0?15:trend<0.1?10:3;
   score=Math.max(0,Math.min(100,Math.round(score)));
   const verdict=score>=80?['Eccellente','#34D399']:score>=60?['Buono','#9be7c4']:score>=40?['Da migliorare','#FBBF24']:['Critico','#F87171'];
+  const grade=score>=90?'A+':score>=80?'A':score>=70?'B':score>=55?'C':score>=40?'D':'E';
+  let summary;
+  if(saveRate<0) summary='Stai spendendo più di quanto incassi: serve un intervento adesso, prima che intacchi i risparmi.';
+  else if(runway<1) summary='Risparmi, ma senza un cuscinetto: un imprevisto ti metterebbe in difficoltà. Costruiscilo come prima cosa.';
+  else if(score>=80) summary='Quadro solido: buon risparmio e sicurezza adeguata. È il momento di far lavorare i tuoi soldi.';
+  else if(score>=60) summary='Vai bene, ma c\'è margine. Parti dalla priorità qui sotto per salire di livello.';
+  else summary='Alcune aree vanno sistemate. Concentrati sulla priorità: è quella che sposta di più il risultato.';
 
-  // CONSIGLI su misura
-  const tips=[];
-  if(saveRate<0){tips.push(['🔴','Spendi più di quanto incassi','Questo mese le uscite stimate ('+fmt(expM)+') superano le entrate ('+fmt(incM)+'). Taglia almeno una spesa non essenziale o aumenta le entrate prima possibile.']);}
-  else if(saveRate<0.1){tips.push(['🟡','Tasso di risparmio basso','Stai risparmiando circa il '+saveP+'%. L\'obiettivo sano è il 20% (regola 50/30/20). Prova a spostare '+fmt(Math.max(0,incM*0.2-(incM-expM)))+' al mese verso il risparmio.']);}
-  else if(saveRate>=0.2){tips.push(['🟢','Ottimo risparmio','Risparmi il '+saveP+'% delle entrate, sopra la soglia del 20%. Valuta di investire l\'eccesso invece di lasciarlo fermo.']);}
-  if(runway<1){tips.push(['⛑️','Nessun cuscinetto','Il tuo saldo copre meno di un mese di spese. Priorità assoluta: costruire un fondo di emergenza di almeno 3 mesi ('+fmt(expM*3)+').']);}
-  else if(runway<3){tips.push(['⛑️','Fondo emergenza da rinforzare','Il saldo copre circa '+runway.toFixed(1)+' mesi di spese. Punta a 3-6 mesi ('+fmt(expM*3)+'–'+fmt(expM*6)+').']);}
-  if(subBurden>=0.1){tips.push(['🔁','Abbonamenti pesanti','Gli abbonamenti ('+fmt(subsM)+'/mese) valgono il '+Math.round(subBurden*100)+'% delle entrate. Sopra il 10% conviene rivedere quelli poco usati.']);}
-  if(over.length){tips.push(['📊','Budget sforati','Hai superato il budget in: '+over.map(id=>cL('expense',id)).join(', ')+'. Rivedi questi limiti o riduci la spesa.']);}
-  if(trend>0.15){tips.push(['📈','Spese in aumento','Questo mese spendi il '+Math.round(trend*100)+'% in più del precedente. Controlla cosa è cambiato prima che diventi un\'abitudine.']);}
-  if(needsP>55&&incM>0){tips.push(['🏠','Spese essenziali alte','Le spese essenziali sono il '+needsP+'% delle entrate (ideale ~50%). Margine ridotto: difficile risparmiare senza ridurle.']);}
-  if(!tips.length){tips.push(['✅','Situazione solida','I tuoi numeri sono in equilibrio. Continua così e considera obiettivi a lungo termine: investimenti o un obiettivo di risparmio dedicato.']);}
+  // CONSIGLI su misura (s = severità: 0 critico, 1 attenzione, 2 positivo)
+  const T=[];
+  if(saveRate<0) T.push({s:0,i:'🔴',t:'Spendi più di quanto incassi',x:`Le uscite stimate (${fmt(expM)}) superano le entrate (${fmt(incM)}). Taglia almeno una spesa importante o aumenta le entrate.`});
+  else if(saveRate<0.1) T.push({s:1,i:'🟡',t:'Risparmio basso',x:`Metti da parte circa il ${saveP}%. L'obiettivo sano è il 20%: prova a risparmiare ${fmt(Math.max(0,incM*0.2-net))} in più al mese.`});
+  else T.push({s:2,i:'🟢',t:'Buon risparmio',x:`Risparmi il ${saveP}% (${fmt(Math.max(0,net))}/mese). Sopra il 20% è ottimo: valuta di investire l'eccesso invece di lasciarlo fermo.`});
+  if(runway<1) T.push({s:0,i:'⛑️',t:'Nessun fondo di emergenza',x:`Il saldo copre meno di un mese di spese. Priorità assoluta: arrivare a 3 mesi (${fmt(emT)}).`+(net>0?` A questo ritmo ci arrivi in ~${Math.ceil((emT-balance)/net)} mesi.`:'')});
+  else if(runway<3) T.push({s:1,i:'⛑️',t:'Fondo emergenza da rinforzare',x:`Copri ${runway.toFixed(1)} mesi. Punta a 3-6 (${fmt(emT)}–${fmt(emT6)}).`+(net>0&&balance<emT?` Ti mancano ${fmt(emT-balance)}, ~${Math.ceil((emT-balance)/net)} mesi.`:'')});
+  else T.push({s:2,i:'🛡️',t:'Cuscinetto adeguato',x:`Hai ${runway>=99?'oltre 6':runway.toFixed(1)} mesi di spese da parte: ottima sicurezza contro gli imprevisti.`});
+  if(subBurden>=0.15) T.push({s:0,i:'🔁',t:'Abbonamenti troppo pesanti',x:`${fmt(subsM)}/mese = ${Math.round(subBurden*100)}% delle entrate. Fai pulizia di quelli poco usati: liberi ${fmt(subsM)} all'anno ogni ${fmt(subsM/12*12)} tagliati.`});
+  else if(subBurden>=0.1) T.push({s:1,i:'🔁',t:'Abbonamenti da rivedere',x:`Valgono il ${Math.round(subBurden*100)}% delle entrate (${fmt(subsM*12)}/anno). Sopra il 10% conviene una pulizia.`});
+  if(over.length) T.push({s:1,i:'📊',t:'Budget sforati',x:`Hai superato il budget in: ${over.map(id=>cL('expense',id)).join(', ')}. Rivedi i limiti o riduci la spesa.`});
+  if(trend>0.15) T.push({s:1,i:'📈',t:'Spese in aumento',x:`Questo mese +${Math.round(trend*100)}% rispetto al precedente. Controlla cosa è cambiato prima che diventi un'abitudine.`});
+  else if(trend<-0.1&&prevExp>0) T.push({s:2,i:'📉',t:'Spese in calo',x:`Questo mese ${Math.round(trend*100)}% rispetto al precedente: ottimo controllo, continua così.`});
+  if(needsP>55&&incM>0) T.push({s:1,i:'🏠',t:'Spese essenziali alte',x:`Gli essenziali sono il ${needsP}% delle entrate (ideale ~50%). Con così poco margine è dura risparmiare: valuta dove ridurle.`});
+  if(!T.some(o=>o.s<2)) T.unshift({s:2,i:'🚀',t:'Pronto per il passo successivo',x:`I fondamentali sono a posto. Fissa un obiettivo di risparmio dedicato o inizia a investire con regolarità per far crescere il capitale.`});
+  T.sort((a,b)=>a.s-b.s);
+  const prio=T[0], rest=T.slice(1,6);
+  const sevCol=s=>s===0?'#F87171':s===1?'#FBBF24':'#34D399';
 
-  const ring=2*Math.PI*42, off=ring*(1-score/100);
+  const ring=2*Math.PI*46, off=ring*(1-score/100);
   body.innerHTML=`
-  <div class="adv-score gcard">
+  <div class="adv-hero a0">
     <div class="adv-ring-wrap">
-      <svg class="adv-ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" class="adv-bg"/><circle cx="50" cy="50" r="42" class="adv-fill" id="adv-fill" stroke="${verdict[1]}" stroke-dasharray="${ring}" stroke-dashoffset="${ring}"/></svg>
-      <div class="adv-ring-c"><div class="adv-num">${score}</div><div class="adv-num-l">/100</div></div>
+      <svg class="adv-ring" viewBox="0 0 110 110">
+        <defs><linearGradient id="advg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${verdict[1]}"/><stop offset="1" stop-color="#a8b4ff"/></linearGradient></defs>
+        <circle cx="55" cy="55" r="46" class="adv-bg"/>
+        <circle cx="55" cy="55" r="46" class="adv-fill" id="adv-fill" stroke="url(#advg)" stroke-dasharray="${ring}" stroke-dashoffset="${ring}"/>
+      </svg>
+      <div class="adv-ring-c"><div class="adv-num">${score}</div><div class="adv-grade" style="color:${verdict[1]}">${grade}</div></div>
     </div>
-    <div class="adv-verdict"><div class="adv-vlabel" style="color:${verdict[1]}">${verdict[0]}</div><div class="adv-vsub">Salute finanziaria</div></div>
+    <div class="adv-hero-r">
+      <div class="adv-vlabel" style="color:${verdict[1]}">${verdict[0]}</div>
+      <div class="adv-vsub">Salute finanziaria</div>
+      <div class="adv-summary">${summary}</div>
+    </div>
   </div>
 
-  <div class="chips" style="padding-top:14px">
+  <div class="adv-prio a1" style="--sev:${sevCol(prio.s)}">
+    <div class="adv-prio-tag">${prio.s===2?'Prossimo passo':'Priorità'}</div>
+    <div class="adv-prio-row"><span class="adv-prio-ico">${prio.i}</span><div class="adv-prio-b"><div class="adv-tip-t">${prio.t}</div><div class="adv-tip-x">${prio.x}</div></div></div>
+  </div>
+
+  <div class="chips a2" style="padding-top:14px">
     <div class="chip"><div class="chip-l">Risparmio</div><div class="chip-v ${saveRate>=0.2?'g':saveRate>=0?'o':'r'}">${saveP}%</div><div class="chip-s2">obiettivo 20%</div></div>
     <div class="chip"><div class="chip-l">Fondo emerg.</div><div class="chip-v ${runway>=3?'g':runway>=1?'o':'r'}">${runway>=99?'∞':runway.toFixed(1)}</div><div class="chip-s2">mesi · obiettivo 3-6</div></div>
     <div class="chip"><div class="chip-l">Abbonamenti</div><div class="chip-v ${subBurden<0.1?'g':subBurden<0.2?'o':'r'}">${Math.round(subBurden*100)}%</div><div class="chip-s2">delle entrate</div></div>
   </div>
 
   <div class="sec">Ripartizione (regola 50/30/20)</div>
-  <div class="adv-503020 gcard">
+  <div class="adv-503020 gcard a3">
     <div class="adv-bar"><span style="width:${Math.min(needsP,100)}%;background:#5aa0ff"></span><span style="width:${Math.min(wantsP,100)}%;background:#FBBF24"></span><span style="width:${Math.min(saveP,100)}%;background:#34D399"></span></div>
     <div class="adv-leg"><span><i style="background:#5aa0ff"></i>Essenziali ${needsP}% <em>·50%</em></span><span><i style="background:#FBBF24"></i>Sfizi ${wantsP}% <em>·30%</em></span><span><i style="background:#34D399"></i>Risparmio ${saveP}% <em>·20%</em></span></div>
   </div>
 
-  <div class="sec">Cosa ti consiglio</div>
-  <div class="adv-tips">${tips.slice(0,5).map(t=>`<div class="adv-tip gcard"><div class="adv-tip-ico">${t[0]}</div><div class="adv-tip-b"><div class="adv-tip-t">${t[1]}</div><div class="adv-tip-x">${t[2]}</div></div></div>`).join('')}</div>
-  <div class="bk-note" style="padding:6px 20px 0">Analisi indicativa basata sui tuoi dati e su criteri standard di finanza personale (regola 50/30/20, fondo emergenza 3-6 mesi). Non è consulenza finanziaria professionale.</div>
+  <div class="sec">Proiezioni</div>
+  <div class="adv-proj a4">
+    <div class="adv-proj-c gcard">
+      <div class="adv-proj-l">Fondo di emergenza</div>
+      <div class="adv-proj-v">${Math.round(emProg*100)}%</div>
+      <div class="goal-bar"><div class="goal-bar-fill" style="width:${Math.round(emProg*100)}%"></div></div>
+      <div class="adv-proj-s">${balance>=emT?'Obiettivo 3 mesi raggiunto 🎉':net>0?'Mancano '+fmt(Math.max(0,emT-balance))+' · ~'+Math.ceil((emT-balance)/net)+' mesi':'Aumenta il risparmio per costruirlo'}</div>
+    </div>
+    <div class="adv-proj-c gcard">
+      <div class="adv-proj-l">Saldo tra 12 mesi</div>
+      <div class="adv-proj-v" style="color:${net>=0?'var(--pos)':'var(--neg)'}">${net>=0?'+':'−'}${fmt(Math.abs(proj12-balance))}</div>
+      <div class="adv-proj-s">Da ${fmt(balance)} a circa <b>${fmt(proj12)}</b> mantenendo questo ritmo (${net>=0?'+':'−'}${fmt(Math.abs(net))}/mese).</div>
+    </div>
+  </div>
+
+  <div class="sec">Altri consigli</div>
+  <div class="adv-tips a5">${rest.length?rest.map(o=>`<div class="adv-tip gcard" style="--sev:${sevCol(o.s)}"><div class="adv-tip-ico">${o.i}</div><div class="adv-tip-b"><div class="adv-tip-t">${o.t}</div><div class="adv-tip-x">${o.x}</div></div></div>`).join(''):'<div class="bk-note" style="padding:0 20px">Nessun altro punto rilevante: continua a tenere sotto controllo i tuoi numeri.</div>'}</div>
+  <div class="bk-note" style="padding:8px 20px 0">Analisi indicativa basata sui tuoi dati e su criteri standard di finanza personale (regola 50/30/20, fondo emergenza 3-6 mesi). Non è consulenza finanziaria professionale.</div>
   `;
   setTimeout(()=>{const f=document.getElementById('adv-fill');if(f)f.style.strokeDashoffset=off;},120);
 }
