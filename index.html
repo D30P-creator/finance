@@ -558,6 +558,28 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
 #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
 /* ══ ANIMATIONS ══ */
+/* ══ ONBOARDING ══ */
+#onboard{position:fixed;inset:0;z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;
+  padding:28px;background:radial-gradient(130% 100% at 50% 0%,#1a1f2b 0%,#0a0b0e 70%);
+  opacity:0;transition:opacity .35s ease}
+#onboard.show{opacity:1}
+.ob-card{width:100%;max-width:380px;text-align:center;animation:fadeUp .5s .05s cubic-bezier(.4,0,.2,1) both}
+.ob-logo{width:96px;height:96px;border-radius:24px;margin:0 auto 22px;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.05);border:1px solid var(--gb);box-shadow:0 12px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.18)}
+.ob-logo img{border-radius:18px;display:block}
+.ob-title{font-size:27px;font-weight:300;letter-spacing:-.8px;margin-bottom:10px}
+.ob-sub{font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:26px;padding:0 6px}
+.ob-points{display:flex;flex-direction:column;gap:14px;text-align:left;margin-bottom:30px}
+.ob-p{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;border-radius:16px;
+  background:var(--g1);border:1px solid var(--gb);box-shadow:var(--gs)}
+.ob-p span{font-size:22px;flex-shrink:0;line-height:1.2}
+.ob-p div{font-size:13px;color:var(--t3);line-height:1.5}
+.ob-p b{color:var(--t1);font-weight:600;font-size:13.5px}
+.ob-btn{width:100%;padding:17px;border-radius:16px;border:none;cursor:pointer;
+  font-size:16px;font-weight:700;color:#0a0b0e;letter-spacing:.2px;font-family:inherit;
+  background:linear-gradient(120deg,#4f9dff,#3fd0c9 55%,#5cf0a0);
+  box-shadow:0 8px 28px rgba(63,208,201,.35),inset 0 1px 0 rgba(255,255,255,.4);transition:.14s}
+.ob-btn:active{transform:scale(.98)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .a0{animation:fadeUp .36s cubic-bezier(.4,0,.2,1) both}
 .a1{animation:fadeUp .36s .05s cubic-bezier(.4,0,.2,1) both}
@@ -787,6 +809,21 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
       <div class="ff"><div class="ff-label">Risparmiato (€)</div><input type="number" id="gm-cur" inputmode="decimal" placeholder="800"></div>
     </div>
     <button class="gm-save" onclick="saveGoal()">Salva</button>
+  </div>
+</div>
+
+<!-- ══ ONBOARDING (primo avvio) ══ -->
+<div id="onboard">
+  <div class="ob-card">
+    <div class="ob-logo"><img src="icon.svg" width="76" height="76" alt="Finance"></div>
+    <h2 class="ob-title">Le tue finanze, private.</h2>
+    <p class="ob-sub">Spese, entrate, abbonamenti e obiettivi — tutto sul tuo telefono. Nessun account, nessuna banca collegata.</p>
+    <div class="ob-points">
+      <div class="ob-p"><span>🔒</span><div><b>100% privato</b><br>I dati restano solo sul dispositivo, mai online.</div></div>
+      <div class="ob-p"><span>🔁</span><div><b>Si aggiorna da sé</b><br>Stipendio e abbonamenti registrati in automatico ogni mese.</div></div>
+      <div class="ob-p"><span>🧭</span><div><b>Consulente integrato</b><br>Ti dice come stai andando e cosa conviene fare.</div></div>
+    </div>
+    <button class="ob-btn" onclick="closeOnboard()">Inizia</button>
   </div>
 </div>
 
@@ -1829,12 +1866,30 @@ function backHandler(){
 window.addEventListener('popstate',()=>{ history.pushState({app:1},''); backHandler(); });
 
 // ═══════════════════════════════════════════════════════════════════
+// ONBOARDING (primo avvio)
+// ═══════════════════════════════════════════════════════════════════
+function closeOnboard(){
+  localStorage.setItem('fin_onboarded','1');
+  const o=document.getElementById('onboard');
+  o.classList.remove('show');
+  setTimeout(()=>{o.style.display='none';},350);
+  try{if(navigator.vibrate)navigator.vibrate(12);}catch(e){}
+}
+function maybeOnboard(){
+  if(localStorage.getItem('fin_onboarded'))return;
+  const o=document.getElementById('onboard');
+  o.style.display='flex';
+  requestAnimationFrame(()=>o.classList.add('show'));
+}
+
+// ═══════════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════════
 if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
 seed();
 processRecurring();
 renderDash();
+maybeOnboard();
 history.replaceState({app:1},'');
 history.pushState({app:1},'');
 </script>
