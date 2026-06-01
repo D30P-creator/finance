@@ -1,5 +1,5 @@
 // Bump questa versione a ogni aggiornamento dei file per forzare il refresh.
-const CACHE = 'nobrok-v17';
+const CACHE = 'nobrok-v19';
 const ASSETS = ['./index.html', './quick-add.html', './manifest.json', './icon.svg'];
 
 self.addEventListener('install', e => {
