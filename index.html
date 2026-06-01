@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#070708">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>Finance</title>
+<title>NOBROK</title>
 <link rel="manifest" href="manifest.json">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <link rel="apple-touch-icon" href="icon.svg">
@@ -472,6 +472,15 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
 .ab-input{flex:1;min-width:0;width:100%;background:transparent;border:none;color:var(--t1);font-size:48px;font-weight:200;
   letter-spacing:-2px;outline:none;font-family:inherit;padding:8px 0}
 .ab-input::placeholder{color:rgba(255,255,255,.1)}
+.voice-btn{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 22px 8px;padding:13px;width:calc(100% - 44px);
+  border-radius:14px;border:1px solid rgba(63,208,201,.35);cursor:pointer;font-family:inherit;font-size:14px;font-weight:600;color:#bdf6ec;
+  background:linear-gradient(120deg,rgba(79,157,255,.16),rgba(92,240,160,.14));
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);transition:.16s}
+.voice-btn:active{transform:scale(.985)}
+.voice-btn svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.voice-btn.listening{color:#fff;border-color:rgba(92,240,160,.7);background:linear-gradient(120deg,rgba(79,157,255,.3),rgba(92,240,160,.28));
+  animation:vpulse 1.2s ease-in-out infinite}
+@keyframes vpulse{0%,100%{box-shadow:0 0 0 0 rgba(92,240,160,.4)}50%{box-shadow:0 0 0 8px rgba(92,240,160,0)}}
 .form-fields{padding:0 22px 8px;display:flex;flex-direction:column;gap:10px}
 .ff{border-radius:var(--rs);padding:13px 15px;
   background:var(--g1);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
@@ -567,6 +576,8 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
 .ob-logo{width:96px;height:96px;border-radius:24px;margin:0 auto 22px;display:flex;align-items:center;justify-content:center;
   background:rgba(255,255,255,.05);border:1px solid var(--gb);box-shadow:0 12px 40px rgba(0,0,0,.5),inset 0 1px 0 rgba(255,255,255,.18)}
 .ob-logo img{border-radius:18px;display:block}
+.ob-brand{font-size:13px;font-weight:700;letter-spacing:4px;margin-bottom:14px;
+  background:linear-gradient(90deg,#7fb0ff,#5cf0a0);-webkit-background-clip:text;background-clip:text;color:transparent}
 .ob-title{font-size:27px;font-weight:300;letter-spacing:-.8px;margin-bottom:10px}
 .ob-sub{font-size:14px;color:var(--t2);line-height:1.6;margin-bottom:26px;padding:0 6px}
 .ob-points{display:flex;flex-direction:column;gap:14px;text-align:left;margin-bottom:30px}
@@ -767,6 +778,10 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
   <div class="amount-block">
     <div class="ab-row"><span class="ab-sym">€</span><input class="ab-input" type="number" id="amt" inputmode="decimal" min="0" step="0.01" placeholder="0"></div>
   </div>
+  <button class="voice-btn" id="voiceBtn" onclick="startVoice()">
+    <svg viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 1 3 3v6a3 3 0 0 1-6 0V5a3 3 0 0 1 3-3z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="18" x2="12" y2="22"/></svg>
+    <span class="vb-label">Detta la spesa a voce</span>
+  </button>
   <div class="form-fields">
     <div class="ff"><div class="ff-label">Descrizione</div><input type="text" id="f-note" placeholder="es. Pranzo, Benzina, Netflix…" maxlength="60" autocomplete="off"></div>
     <div class="ff" id="ff-date"><div class="ff-label">Data</div><input type="date" id="f-date"></div>
@@ -815,9 +830,10 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
 <!-- ══ ONBOARDING (primo avvio) ══ -->
 <div id="onboard">
   <div class="ob-card">
-    <div class="ob-logo"><img src="icon.svg" width="76" height="76" alt="Finance"></div>
-    <h2 class="ob-title">Le tue finanze, private.</h2>
-    <p class="ob-sub">Spese, entrate, abbonamenti e obiettivi — tutto sul tuo telefono. Nessun account, nessuna banca collegata.</p>
+    <div class="ob-logo"><img src="icon.svg" width="76" height="76" alt="NOBROK"></div>
+    <div class="ob-brand">NOBROK</div>
+    <h2 class="ob-title">Non finire mai al verde.</h2>
+    <p class="ob-sub">Tieni sotto controllo spese, entrate e abbonamenti e sai sempre come stai messo. Tutto sul tuo telefono — niente account, niente banca collegata.</p>
     <div class="ob-points">
       <div class="ob-p"><span>🔒</span><div><b>100% privato</b><br>I dati restano solo sul dispositivo, mai online.</div></div>
       <div class="ob-p"><span>🔁</span><div><b>Si aggiorna da sé</b><br>Stipendio e abbonamenti registrati in automatico ogni mese.</div></div>
@@ -1019,6 +1035,7 @@ function syncType(){
   document.getElementById('ff-renew').style.display=curT==='subscription'?'':'none';
   document.getElementById('ff-day').style.display=curT==='recurring'?'':'none';
   document.getElementById('f-note').placeholder=curT==='recurring'?'es. Stipendio, Affitto incassato…':'es. Pranzo, Benzina, Netflix…';
+  const vb=document.getElementById('voiceBtn');if(vb)vb.style.display=curT==='expense'?'flex':'none';
 }
 function renderCatGrid(){
   const g=document.getElementById('cat-grid');
@@ -1079,6 +1096,77 @@ function doSave(){
   const cur=document.querySelector('.scr.on');
   if(cur&&cur.id==='s-subs')renderSubs();
   if(cur&&cur.id==='s-income')renderIncome();
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// COMANDO VOCALE — "Detta la spesa" (es. "dodici e cinquanta di benzina")
+// ═══════════════════════════════════════════════════════════════════
+const VOICE_CATS={
+  food:['spesa','supermercato','pranzo','cena','colazione','cibo','ristorante','pizzeria','pizza','bar','caffè','caffe','panino','sushi','aperitivo','gelato'],
+  transport:['benzina','carburante','gasolio','diesel','taxi','treno','autobus','bus','metro','metropolitana','parcheggio','pedaggio','autostrada','biglietto','trasporti','auto','macchina'],
+  home:['affitto','bolletta','bollette','luce','gas','acqua','casa','mutuo','condominio','internet','wifi'],
+  health:['farmacia','farmaci','medico','dottore','dentista','salute','visita','medicina'],
+  shopping:['vestiti','scarpe','abbigliamento','shopping','amazon','negozio','regalo'],
+  fun:['cinema','svago','uscita','divertimento','gioco','concerto','videogioco','poker','scommessa'],
+  beauty:['parrucchiere','barbiere','estetista','cura','unghie','massaggio'],
+  projects:['progetto','progetti','dominio','hosting','software','abbonamento software','attrezzatura'],
+  other:[]
+};
+const IT_UNITS={zero:0,uno:1,una:1,due:2,tre:3,quattro:4,cinque:5,sei:6,sette:7,otto:8,nove:9,dieci:10,undici:11,dodici:12,tredici:13,quattordici:14,quindici:15,sedici:16,diciassette:17,diciotto:18,diciannove:19,venti:20,trenta:30,quaranta:40,cinquanta:50,sessanta:60,settanta:70,ottanta:80,novanta:90,cento:100};
+function it2num(t){
+  // gestisce "X e Y" (euro e centesimi) e numeri composti semplici 0-99
+  const parse=str=>{
+    str=str.trim();if(!str)return null;
+    if(IT_UNITS[str]!=null)return IT_UNITS[str];
+    // composti tipo "venticinque", "trentadue"
+    for(const tens of ['venti','trenta','quaranta','cinquanta','sessanta','settanta','ottanta','novanta']){
+      if(str.startsWith(tens)){const rest=str.slice(tens.length);const u=IT_UNITS[rest];if(u!=null&&u<10)return IT_UNITS[tens]+u;if(rest==='')return IT_UNITS[tens];}
+    }
+    return null;
+  };
+  const m=t.match(/([a-zàèéìòù]+)(?:\s+e\s+([a-zàèéìòù]+))?\s*(?:euro)?/);
+  // fallback: scorri le parole cercando un numero
+  const words=t.split(/\s+/);
+  for(let i=0;i<words.length;i++){
+    const n=parse(words[i]);
+    if(n!=null){
+      if(words[i+1]==='e'){const c=parse(words[i+2]||'');if(c!=null)return n+c/100;}
+      return n;
+    }
+  }
+  return null;
+}
+let recog=null;
+function startVoice(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  const btn=document.getElementById('voiceBtn'),lbl=btn.querySelector('.vb-label');
+  if(!SR){toast('Comando vocale non supportato su questo browser');return;}
+  if(btn.classList.contains('listening')){try{recog&&recog.stop();}catch(e){}return;}
+  recog=new SR();recog.lang='it-IT';recog.interimResults=false;recog.maxAlternatives=1;
+  btn.classList.add('listening');lbl.textContent='Sto ascoltando…';buzz(15);
+  recog.onresult=e=>{parseVoice(e.results[0][0].transcript);};
+  recog.onerror=e=>{toast(e.error==='not-allowed'||e.error==='service-not-allowed'?'Consenti il microfono per usare la voce':'Non ho capito, riprova');};
+  recog.onend=()=>{btn.classList.remove('listening');lbl.textContent='Detta la spesa a voce';};
+  try{recog.start();}catch(e){btn.classList.remove('listening');lbl.textContent='Detta la spesa a voce';}
+}
+function parseVoice(txt){
+  const t=txt.toLowerCase().replace(/[.!?]/g,'');
+  let amount=null;
+  const m=t.match(/(\d+(?:[.,]\d{1,2})?)/);
+  if(m) amount=parseFloat(m[1].replace(',','.'));
+  else amount=it2num(t);
+  let cat='other';
+  for(const id of Object.keys(VOICE_CATS)){ if(VOICE_CATS[id].some(k=>t.includes(k))){cat=id;break;} }
+  let note=txt.replace(/\b\d+(?:[.,]\d{1,2})?\b/g,'').replace(/€|euro|centesimi?/gi,'').replace(/\s+/g,' ').trim();
+  note=note.replace(/^(di |per |a |spesa |spese |ho speso |pagato )+/i,'').trim();
+  if(!note||note.length<2) note=cL('expense',cat);
+  editId=null;editSubId=null;editRecId=null;
+  curT='expense';curC=cat;syncType();renderCatGrid();
+  if(amount){document.getElementById('amt').value=amount;}
+  document.getElementById('f-note').value=note.charAt(0).toUpperCase()+note.slice(1);
+  document.getElementById('ov-title').textContent='Nuova spesa';
+  buzz(20);
+  toast(amount?'Capito: '+fmt(amount)+' · '+cL('expense',cat)+'. Controlla e salva.':'Importo non capito: completa a mano.');
 }
 
 // ═══════════════════════════════════════════════════════════════════

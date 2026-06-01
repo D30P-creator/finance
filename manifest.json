@@ -1,7 +1,7 @@
 {
-  "name": "Finance",
-  "short_name": "Finance",
-  "description": "Gestione finanze personali",
+  "name": "NOBROK",
+  "short_name": "NOBROK",
+  "description": "Le tue finanze personali, private — spese, entrate, abbonamenti e consulente.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#070708",
