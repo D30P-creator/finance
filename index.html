@@ -79,12 +79,12 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
   backdrop-filter:blur(40px);-webkit-backdrop-filter:blur(40px);
   border-top:1px solid var(--t4);padding:6px 0 max(10px,env(safe-area-inset-bottom));
   flex-shrink:0;z-index:10}
-.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;
+.ni{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 1px;
   cursor:pointer;transition:transform .14s;position:relative;-webkit-user-select:none}
 .ni:active{transform:scale(.86)}
-.ni svg{width:22px;height:22px;fill:none;stroke:var(--t3);stroke-width:1.8;
+.ni svg{width:20px;height:20px;fill:none;stroke:var(--t3);stroke-width:1.8;
   stroke-linecap:round;stroke-linejoin:round;transition:stroke .2s}
-.ni span{font-size:9.5px;color:var(--t3);letter-spacing:.1px;transition:color .2s;white-space:nowrap}
+.ni span{font-size:8.7px;color:var(--t3);letter-spacing:0;transition:color .2s;white-space:nowrap}
 .ni.on svg{stroke:var(--a)}
 .ni.on span{color:var(--a)}
 .ni-dot{position:absolute;bottom:2px;width:4px;height:4px;border-radius:2px;
@@ -326,6 +326,30 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
   box-shadow:var(--gs);transition:.14s;font-family:inherit;width:100%}
 .bk-btn:active{transform:scale(.985);background:rgba(255,255,255,.1)}
 .bk-note{font-size:11px;color:var(--t3);line-height:1.5;padding:4px 2px 0}
+/* consulente */
+.adv-score{margin:4px 20px 0;display:flex;align-items:center;gap:18px;padding:18px 20px}
+.adv-ring-wrap{position:relative;width:96px;height:96px;flex-shrink:0}
+.adv-ring{width:96px;height:96px;transform:rotate(-90deg)}
+.adv-bg{fill:none;stroke:rgba(255,255,255,.08);stroke-width:8}
+.adv-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1)}
+.adv-ring-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.adv-num{font-size:30px;font-weight:300;letter-spacing:-1px;line-height:1}
+.adv-num-l{font-size:11px;color:var(--t3);margin-top:1px}
+.adv-verdict{flex:1;min-width:0}
+.adv-vlabel{font-size:22px;font-weight:400;letter-spacing:-.5px}
+.adv-vsub{font-size:12px;color:var(--t3);margin-top:3px}
+.adv-503020{margin:0 20px;padding:16px}
+.adv-bar{display:flex;height:14px;border-radius:8px;overflow:hidden;background:rgba(255,255,255,.06)}
+.adv-bar span{height:100%;transition:width 1s cubic-bezier(.4,0,.2,1)}
+.adv-leg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:12px}
+.adv-leg span{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--t2)}
+.adv-leg i{width:9px;height:9px;border-radius:3px;flex-shrink:0}
+.adv-leg em{color:var(--t3);font-style:normal;font-size:10px}
+.adv-tips{display:flex;flex-direction:column;gap:10px;padding:0 20px}
+.adv-tip{display:flex;gap:13px;padding:14px 15px;align-items:flex-start}
+.adv-tip-ico{font-size:20px;flex-shrink:0;line-height:1.2}
+.adv-tip-t{font-size:14px;font-weight:500;margin-bottom:3px}
+.adv-tip-x{font-size:12.5px;color:var(--t2);line-height:1.55}
 /* savings rate */
 .srate-card{margin:14px 20px 0;border-radius:var(--r);padding:15px 16px;
   background:var(--g1);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
@@ -655,6 +679,14 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
       </div>
     </div>
 
+    <!-- ══ CONSULENTE ══ -->
+    <div class="scr" id="s-advisor">
+      <div class="pb">
+        <div class="page-header"><div class="ph-label">Consulente finanziario</div></div>
+        <div id="advisor-body"></div>
+      </div>
+    </div>
+
   </div>
 
   <nav id="nav">
@@ -663,6 +695,7 @@ html,body{height:100%;width:100%;max-width:100%;overflow:hidden;overflow-x:clip;
     <div class="ni" onclick="goTab('income',this)"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg><span>Entrate</span><div class="ni-dot"></div></div>
     <div class="ni" onclick="goTab('subs',this)"><svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/></svg><span>Abbonam.</span><div class="ni-dot"></div></div>
     <div class="ni" onclick="goTab('stats',this)"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span>Statistiche</span><div class="ni-dot"></div></div>
+    <div class="ni" onclick="goTab('advisor',this)"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><polygon points="16.5 7.5 13.5 13.5 7.5 16.5 10.5 10.5"/></svg><span>Consulente</span><div class="ni-dot"></div></div>
   </nav>
 </div>
 
@@ -768,6 +801,7 @@ const CATS={
     {id:'shopping',e:'🛍️',l:'Shopping',c:'#EC407A'},
     {id:'fun',e:'🎮',l:'Svago',c:'#FFA726'},
     {id:'beauty',e:'💈',l:'Cura',c:'#26C6DA'},
+    {id:'projects',e:'🚀',l:'Progetti',c:'#7C5CFC'},
     {id:'other',e:'📦',l:'Altro',c:'#78909C'},
   ],
   income:[
@@ -798,11 +832,14 @@ const cC=(t,id)=>(CATS[t]||CATS.expense).find(x=>x.id===id)?.c||'#78909C';
 // UTILS
 // ═══════════════════════════════════════════════════════════════════
 const fmt=n=>'€'+Math.abs(n).toLocaleString('it-IT',{minimumFractionDigits:0,maximumFractionDigits:2});
-const today=()=>new Date().toISOString().split('T')[0];
+// Date in ORA LOCALE (evita lo slittamento di un giorno/mese causato da toISOString/UTC)
+const ymd=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+const mk2=(y,m)=>{const d=new Date(y,m,1);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;};
+const today=()=>ymd(new Date());
 const nowMK=()=>today().slice(0,7);
 const MN=['Gen','Feb','Mar','Apr','Mag','Giu','Lug','Ago','Set','Ott','Nov','Dic'];
 const MNF=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
-const daysTo=ds=>{const d=new Date(ds),n=new Date();n.setHours(0,0,0,0);return Math.ceil((d-n)/86400000)};
+const daysTo=ds=>{const p=String(ds).split('-').map(Number);const d=new Date(p[0],(p[1]||1)-1,p[2]||1);const n=new Date();n.setHours(0,0,0,0);return Math.round((d-n)/86400000)};
 const fmtD=d=>{if(!d)return'';const[y,m,dd]=d.split('-');return`${dd}/${m}/${y}`};
 const fmtM=k=>{const[y,m]=k.split('-');return MNF[+m-1]+' '+y};
 
@@ -819,27 +856,31 @@ function countUp(el,to,dur=850){
 // ═══════════════════════════════════════════════════════════════════
 // NAV
 // ═══════════════════════════════════════════════════════════════════
+let activeTab='dash';
 function goTab(name,el){
+  activeTab=name;
   document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('on'));
   document.getElementById('s-'+name).classList.add('on');
-  el.classList.add('on');
+  if(el)el.classList.add('on');
+  else{const idx={dash:0,tx:1,income:2,subs:3,stats:4,advisor:5}[name];const ni=document.querySelectorAll('#nav .ni')[idx];if(ni)ni.classList.add('on');}
   if(name==='dash')renderDash();
   if(name==='tx')renderTx();
   if(name==='income')renderIncome();
   if(name==='subs')renderSubs();
   if(name==='stats')renderStats();
+  if(name==='advisor')renderAdvisor();
 }
 
 // ═══════════════════════════════════════════════════════════════════
 // ADD OVERLAY
 // ═══════════════════════════════════════════════════════════════════
-let curT='expense',curC='food',editId=null;
+let curT='expense',curC='food',editId=null,editSubId=null,editRecId=null;
 function buzz(ms){try{if(navigator.vibrate)navigator.vibrate(ms);}catch(e){}}
 
 function toggleOv(){document.getElementById('overlay').classList.contains('open')?closeOv():openOv();}
 function openOv(){
-  editId=null;
+  editId=null;editSubId=null;editRecId=null;
   curT='expense';curC='food';
   document.getElementById('amt').value='';
   document.getElementById('f-note').value='';
@@ -868,8 +909,36 @@ function editTx(){
   document.getElementById('overlay').classList.add('open');
   document.getElementById('fab').classList.add('open');
 }
+function editSub(id){
+  const s=S.subs.find(x=>x.id==id);if(!s)return;
+  editId=null;editSubId=s.id;
+  curT='subscription';curC=s.cat;
+  document.getElementById('amt').value=s.amount;
+  document.getElementById('f-note').value=s.name||'';
+  document.getElementById('f-renew').value=s.renewal||today();
+  document.getElementById('f-day').value='';
+  syncType();renderCatGrid();
+  document.getElementById('ov-title').textContent='Modifica abbonamento';
+  document.getElementById('overlay').scrollTop=0;
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('fab').classList.add('open');
+}
+function editRec(id){
+  const r=S.recurring.find(x=>x.id==id);if(!r)return;
+  editId=null;editSubId=null;editRecId=r.id;
+  curT='recurring';curC=r.cat;
+  document.getElementById('amt').value=r.amount;
+  document.getElementById('f-note').value=r.note||'';
+  document.getElementById('f-day').value=r.day||1;
+  document.getElementById('f-renew').value='';
+  syncType();renderCatGrid();
+  document.getElementById('ov-title').textContent='Modifica entrata ricorrente';
+  document.getElementById('overlay').scrollTop=0;
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('fab').classList.add('open');
+}
 function closeOv(){
-  editId=null;
+  editId=null;editSubId=null;editRecId=null;
   document.getElementById('overlay').classList.remove('open');
   document.getElementById('fab').classList.remove('open');
 }
@@ -917,14 +986,26 @@ function doSave(){
   editId=null;
   if(curT==='subscription'){
     const renewal=document.getElementById('f-renew').value||today();
-    const s=S.subs;s.unshift({id:Date.now(),name:note,amount:amt,cat:curC,renewal,on:true});S.subs=s;
-    toast('Abbonamento aggiunto ✓');
+    if(editSubId!==null){
+      const s=S.subs;const i=s.findIndex(x=>x.id==editSubId);
+      if(i>-1){s[i]={...s[i],name:note,amount:amt,cat:curC,renewal};S.subs=s;}
+      editSubId=null;buzz(15);toast('Abbonamento modificato ✓');
+    } else {
+      const s=S.subs;s.unshift({id:Date.now(),name:note,amount:amt,cat:curC,renewal,on:true});S.subs=s;
+      toast('Abbonamento aggiunto ✓');
+    }
   } else if(curT==='recurring'){
     let day=parseInt(document.getElementById('f-day').value)||1;
     day=Math.min(Math.max(day,1),28);
-    const r=S.recurring;r.unshift({id:'rec'+Date.now(),type:'income',amount:amt,cat:curC,note,day,active:true,start:nowMK()});S.recurring=r;
-    processRecurring();
-    toast('Entrata ricorrente aggiunta ✓');
+    if(editRecId!==null){
+      const r=S.recurring;const i=r.findIndex(x=>x.id==editRecId);
+      if(i>-1){r[i]={...r[i],amount:amt,cat:curC,note,day};S.recurring=r;}
+      editRecId=null;processRecurring();buzz(15);toast('Entrata ricorrente modificata ✓');
+    } else {
+      const r=S.recurring;r.unshift({id:'rec'+Date.now(),type:'income',amount:amt,cat:curC,note,day,active:true,start:nowMK()});S.recurring=r;
+      processRecurring();
+      toast('Entrata ricorrente aggiunta ✓');
+    }
   } else {
     const date=document.getElementById('f-date').value||today();
     const t=S.tx;t.unshift({id:Date.now(),type:curT,amount:amt,cat:curC,note,date});S.tx=t;
@@ -1003,7 +1084,6 @@ function saveGoal(){
 // ═══════════════════════════════════════════════════════════════════
 function processRecurring(){
   const now = new Date();
-  const todayStr = now.toISOString().split('T')[0];
   let tx = S.tx;
   let subs = S.subs;
   let changed = false;
@@ -1022,7 +1102,7 @@ function processRecurring(){
     while(cursor <= curMonth){
       const due = new Date(cursor.getFullYear(), cursor.getMonth(), day);
       if(due <= now){
-        const dueDateStr = due.toISOString().split('T')[0];
+        const dueDateStr = ymd(due);
         const monthKey = dueDateStr.slice(0,7);
         const exists = tx.some(t =>
           (t.recurringId === r.id || (t.cat === r.cat && t.note === r.note && t.type === r.type))
@@ -1049,10 +1129,11 @@ function processRecurring(){
   // 2. Abbonamenti attivi — genera spesa quando scade e aggiorna renewal
   subs = subs.map(s => {
     if(!s.on) return s;
-    let renewal = new Date(s.renewal);
+    const rp=String(s.renewal).split('-').map(Number);
+    let renewal = new Date(rp[0], (rp[1]||1)-1, rp[2]||1);
     // Se la data di rinnovo è passata, registra la spesa e sposta al mese dopo
     while(renewal <= now){
-      const renewalStr = renewal.toISOString().split('T')[0];
+      const renewalStr = ymd(renewal);
       const monthKey = renewalStr.slice(0,7);
       const exists = tx.some(t => t.subId === s.id && t.date.startsWith(monthKey));
       if(!exists){
@@ -1070,7 +1151,7 @@ function processRecurring(){
       }
       // Avanza renewal di un mese
       renewal = new Date(renewal.getFullYear(), renewal.getMonth()+1, renewal.getDate());
-      s = {...s, renewal: renewal.toISOString().split('T')[0]};
+      s = {...s, renewal: ymd(renewal)};
     }
     return s;
   });
@@ -1088,7 +1169,7 @@ let projChart=null,PP=3;
 function renderDash(){
   const tx=S.tx,subs=S.subs.filter(s=>s.on),now=new Date();
   const mk=nowMK();
-  const pmk=new Date(now.getFullYear(),now.getMonth()-1,1).toISOString().slice(0,7);
+  const pmk=mk2(now.getFullYear(),now.getMonth()-1);
   const mIn=tx.filter(t=>t.type==='income'&&t.date?.startsWith(mk)).reduce((a,t)=>a+t.amount,0);
   const mOut=tx.filter(t=>t.type==='expense'&&t.date?.startsWith(mk)).reduce((a,t)=>a+t.amount,0);
   const pOut=tx.filter(t=>t.type==='expense'&&t.date?.startsWith(pmk)).reduce((a,t)=>a+t.amount,0);
@@ -1204,7 +1285,7 @@ function renderProjChart(){
   const now=new Date();
   let expSum=0,expMonths=0;
   for(let k=1;k<=3;k++){
-    const d=new Date(now.getFullYear(),now.getMonth()-k,1),mk=d.toISOString().slice(0,7);
+    const mk=mk2(now.getFullYear(),now.getMonth()-k);
     const m=tx.filter(t=>t.type==='expense'&&!t.subId&&t.date?.startsWith(mk)).reduce((a,t)=>a+t.amount,0);
     expSum+=m;expMonths++;
   }
@@ -1362,11 +1443,12 @@ function renderIncome(){
       </div>
     </div>`;}).join('');
   rel.querySelectorAll('.sub-full[data-rid]').forEach(row=>{
-    row.addEventListener('click',()=>toggleRec(row.dataset.rid));
-    let t;const del=()=>{if(confirm('Eliminare questa entrata regolare?')){S.recurring=S.recurring.filter(x=>x.id!=row.dataset.rid);renderIncome();renderDash();toast('Eliminata');}};
-    row.addEventListener('touchstart',()=>{t=setTimeout(del,650)},{passive:true});
+    let t,long=false;
+    row.addEventListener('click',()=>{if(!long)editRec(row.dataset.rid);long=false;});
+    const del=()=>{long=true;if(confirm('Eliminare questa entrata regolare?')){S.recurring=S.recurring.filter(x=>x.id!=row.dataset.rid);renderIncome();renderDash();toast('Eliminata');}};
+    row.addEventListener('touchstart',()=>{long=false;t=setTimeout(del,650)},{passive:true});
     row.addEventListener('touchend',()=>clearTimeout(t));
-    row.addEventListener('mousedown',()=>{t=setTimeout(del,800)});
+    row.addEventListener('mousedown',()=>{long=false;t=setTimeout(del,800)});
     row.addEventListener('mouseup',()=>clearTimeout(t));
   });
 }
@@ -1393,10 +1475,12 @@ function renderSubs(){
       </div>
     </div>`;}).join('');
   el.querySelectorAll('.sub-full[data-sid]').forEach(row=>{
-    let t;const del=()=>{if(confirm('Eliminare?')){S.subs=S.subs.filter(x=>x.id!=row.dataset.sid);renderSubs();toast('Eliminato');}};
-    row.addEventListener('touchstart',()=>{t=setTimeout(del,650)},{passive:true});
+    let t,long=false;
+    const del=()=>{long=true;if(confirm('Eliminare?')){S.subs=S.subs.filter(x=>x.id!=row.dataset.sid);renderSubs();toast('Eliminato');}};
+    row.addEventListener('click',()=>{if(!long)editSub(row.dataset.sid);long=false;});
+    row.addEventListener('touchstart',()=>{long=false;t=setTimeout(del,650)},{passive:true});
     row.addEventListener('touchend',()=>clearTimeout(t));
-    row.addEventListener('mousedown',()=>{t=setTimeout(del,800)});
+    row.addEventListener('mousedown',()=>{long=false;t=setTimeout(del,800)});
     row.addEventListener('mouseup',()=>clearTimeout(t));
   });
 }
@@ -1412,7 +1496,7 @@ function renderStats(){
   const tx=S.tx,now=new Date(),budgets=S.budgets;
   let filt;
   if(SP==='month')filt=tx.filter(t=>t.date?.startsWith(nowMK()));
-  else if(SP==='last'){const lm=new Date(now.getFullYear(),now.getMonth()-1,1).toISOString().slice(0,7);filt=tx.filter(t=>t.date?.startsWith(lm));}
+  else if(SP==='last'){const lm=mk2(now.getFullYear(),now.getMonth()-1);filt=tx.filter(t=>t.date?.startsWith(lm));}
   else if(SP==='year')filt=tx.filter(t=>t.date?.startsWith(String(now.getFullYear())));
   else filt=tx;
 
@@ -1436,7 +1520,7 @@ function renderStats(){
   // Bar chart — entrate vs uscite, ultimi 6 mesi
   const L6=[],INC6=[],EXP6=[];
   for(let i=5;i>=0;i--){
-    const d=new Date(now.getFullYear(),now.getMonth()-i,1),mkk=d.toISOString().slice(0,7);
+    const d=new Date(now.getFullYear(),now.getMonth()-i,1),mkk=mk2(d.getFullYear(),d.getMonth());
     L6.push(MN[d.getMonth()]);
     INC6.push(tx.filter(t=>t.type==='income'&&t.date?.startsWith(mkk)).reduce((a,t)=>a+t.amount,0));
     EXP6.push(tx.filter(t=>t.type==='expense'&&t.date?.startsWith(mkk)).reduce((a,t)=>a+t.amount,0));
@@ -1568,12 +1652,119 @@ function exportCSV(){
 }
 
 // ═══════════════════════════════════════════════════════════════════
+// CONSULENTE FINANZIARIO (regole 50/30/20, tasso risparmio, fondo emergenza)
+// ═══════════════════════════════════════════════════════════════════
+const NEEDS=['food','home','health','transport'];
+function renderAdvisor(){
+  const tx=S.tx,now=new Date(),mk=nowMK();
+  const recM=S.recurring.filter(r=>r.active).reduce((a,r)=>a+r.amount,0);
+  const subsM=S.subs.filter(s=>s.on).reduce((a,s)=>a+s.amount,0);
+  // Entrate mensili stimate: ricorrenti attive + entrate del mese non ricorrenti
+  const extraInc=tx.filter(t=>t.type==='income'&&!t.recurringId&&t.date?.startsWith(mk)).reduce((a,t)=>a+t.amount,0);
+  const incM=recM+extraInc;
+  // Uscite mensili: media ultimi 3 mesi (o mese corrente se non c'è storico)
+  let sum=0,n=0;
+  for(let k=1;k<=3;k++){const m=mk2(now.getFullYear(),now.getMonth()-k);const v=tx.filter(t=>t.type==='expense'&&t.date?.startsWith(m)).reduce((a,t)=>a+t.amount,0);if(v>0){sum+=v;n++;}}
+  const thisExp=tx.filter(t=>t.type==='expense'&&t.date?.startsWith(mk)).reduce((a,t)=>a+t.amount,0);
+  const expM=n?sum/n:thisExp;
+  const balance=tx.filter(t=>t.type==='income').reduce((a,t)=>a+t.amount,0)-tx.filter(t=>t.type==='expense').reduce((a,t)=>a+t.amount,0);
+
+  const body=document.getElementById('advisor-body');
+  if(incM<=0&&expM<=0&&!tx.length){
+    body.innerHTML='<div class="empty-state">Aggiungi entrate e spese e il consulente analizzerà la tua situazione: tasso di risparmio, fondo di emergenza, peso degli abbonamenti e consigli su misura.</div>';
+    return;
+  }
+
+  const saveRate=incM>0?(incM-expM)/incM:(expM>0?-1:0);
+  const runway=expM>0?balance/expM:(balance>0?99:0);
+  const subBurden=incM>0?subsM/incM:0;
+  // 50/30/20: ripartizione spese del mese
+  const needsExp=tx.filter(t=>t.type==='expense'&&t.date?.startsWith(mk)&&NEEDS.includes(t.cat)).reduce((a,t)=>a+t.amount,0);
+  const wantsExp=thisExp-needsExp;
+  const needsP=incM>0?Math.round(needsExp/incM*100):0;
+  const wantsP=incM>0?Math.round(wantsExp/incM*100):0;
+  const saveP=Math.max(0,Math.round(saveRate*100));
+  // sforamenti budget
+  const bud=S.budgets;const over=Object.keys(bud).filter(id=>{const sp=tx.filter(t=>t.type==='expense'&&t.cat===id&&t.date?.startsWith(mk)).reduce((a,t)=>a+t.amount,0);return sp>bud[id];});
+  // trend vs mese scorso
+  const pmk=mk2(now.getFullYear(),now.getMonth()-1);
+  const prevExp=tx.filter(t=>t.type==='expense'&&t.date?.startsWith(pmk)).reduce((a,t)=>a+t.amount,0);
+  const trend=prevExp>0?(thisExp-prevExp)/prevExp:0;
+
+  // PUNTEGGIO 0-100
+  let score=0;
+  score+= saveRate>=0.2?30:saveRate>=0.1?20:saveRate>=0?10:0;
+  score+= runway>=6?25:runway>=3?18:runway>=1?10:3;
+  score+= subBurden<0.05?15:subBurden<0.1?10:subBurden<0.2?5:0;
+  score+= over.length===0?15:over.length<=2?7:2;
+  score+= trend<=0?15:trend<0.1?10:3;
+  score=Math.max(0,Math.min(100,Math.round(score)));
+  const verdict=score>=80?['Eccellente','#34D399']:score>=60?['Buono','#9be7c4']:score>=40?['Da migliorare','#FBBF24']:['Critico','#F87171'];
+
+  // CONSIGLI su misura
+  const tips=[];
+  if(saveRate<0){tips.push(['🔴','Spendi più di quanto incassi','Questo mese le uscite stimate ('+fmt(expM)+') superano le entrate ('+fmt(incM)+'). Taglia almeno una spesa non essenziale o aumenta le entrate prima possibile.']);}
+  else if(saveRate<0.1){tips.push(['🟡','Tasso di risparmio basso','Stai risparmiando circa il '+saveP+'%. L\'obiettivo sano è il 20% (regola 50/30/20). Prova a spostare '+fmt(Math.max(0,incM*0.2-(incM-expM)))+' al mese verso il risparmio.']);}
+  else if(saveRate>=0.2){tips.push(['🟢','Ottimo risparmio','Risparmi il '+saveP+'% delle entrate, sopra la soglia del 20%. Valuta di investire l\'eccesso invece di lasciarlo fermo.']);}
+  if(runway<1){tips.push(['⛑️','Nessun cuscinetto','Il tuo saldo copre meno di un mese di spese. Priorità assoluta: costruire un fondo di emergenza di almeno 3 mesi ('+fmt(expM*3)+').']);}
+  else if(runway<3){tips.push(['⛑️','Fondo emergenza da rinforzare','Il saldo copre circa '+runway.toFixed(1)+' mesi di spese. Punta a 3-6 mesi ('+fmt(expM*3)+'–'+fmt(expM*6)+').']);}
+  if(subBurden>=0.1){tips.push(['🔁','Abbonamenti pesanti','Gli abbonamenti ('+fmt(subsM)+'/mese) valgono il '+Math.round(subBurden*100)+'% delle entrate. Sopra il 10% conviene rivedere quelli poco usati.']);}
+  if(over.length){tips.push(['📊','Budget sforati','Hai superato il budget in: '+over.map(id=>cL('expense',id)).join(', ')+'. Rivedi questi limiti o riduci la spesa.']);}
+  if(trend>0.15){tips.push(['📈','Spese in aumento','Questo mese spendi il '+Math.round(trend*100)+'% in più del precedente. Controlla cosa è cambiato prima che diventi un\'abitudine.']);}
+  if(needsP>55&&incM>0){tips.push(['🏠','Spese essenziali alte','Le spese essenziali sono il '+needsP+'% delle entrate (ideale ~50%). Margine ridotto: difficile risparmiare senza ridurle.']);}
+  if(!tips.length){tips.push(['✅','Situazione solida','I tuoi numeri sono in equilibrio. Continua così e considera obiettivi a lungo termine: investimenti o un obiettivo di risparmio dedicato.']);}
+
+  const ring=2*Math.PI*42, off=ring*(1-score/100);
+  body.innerHTML=`
+  <div class="adv-score gcard">
+    <div class="adv-ring-wrap">
+      <svg class="adv-ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="42" class="adv-bg"/><circle cx="50" cy="50" r="42" class="adv-fill" id="adv-fill" stroke="${verdict[1]}" stroke-dasharray="${ring}" stroke-dashoffset="${ring}"/></svg>
+      <div class="adv-ring-c"><div class="adv-num">${score}</div><div class="adv-num-l">/100</div></div>
+    </div>
+    <div class="adv-verdict"><div class="adv-vlabel" style="color:${verdict[1]}">${verdict[0]}</div><div class="adv-vsub">Salute finanziaria</div></div>
+  </div>
+
+  <div class="chips" style="padding-top:14px">
+    <div class="chip"><div class="chip-l">Risparmio</div><div class="chip-v ${saveRate>=0.2?'g':saveRate>=0?'o':'r'}">${saveP}%</div><div class="chip-s2">obiettivo 20%</div></div>
+    <div class="chip"><div class="chip-l">Fondo emerg.</div><div class="chip-v ${runway>=3?'g':runway>=1?'o':'r'}">${runway>=99?'∞':runway.toFixed(1)}</div><div class="chip-s2">mesi · obiettivo 3-6</div></div>
+    <div class="chip"><div class="chip-l">Abbonamenti</div><div class="chip-v ${subBurden<0.1?'g':subBurden<0.2?'o':'r'}">${Math.round(subBurden*100)}%</div><div class="chip-s2">delle entrate</div></div>
+  </div>
+
+  <div class="sec">Ripartizione (regola 50/30/20)</div>
+  <div class="adv-503020 gcard">
+    <div class="adv-bar"><span style="width:${Math.min(needsP,100)}%;background:#5aa0ff"></span><span style="width:${Math.min(wantsP,100)}%;background:#FBBF24"></span><span style="width:${Math.min(saveP,100)}%;background:#34D399"></span></div>
+    <div class="adv-leg"><span><i style="background:#5aa0ff"></i>Essenziali ${needsP}% <em>·50%</em></span><span><i style="background:#FBBF24"></i>Sfizi ${wantsP}% <em>·30%</em></span><span><i style="background:#34D399"></i>Risparmio ${saveP}% <em>·20%</em></span></div>
+  </div>
+
+  <div class="sec">Cosa ti consiglio</div>
+  <div class="adv-tips">${tips.slice(0,5).map(t=>`<div class="adv-tip gcard"><div class="adv-tip-ico">${t[0]}</div><div class="adv-tip-b"><div class="adv-tip-t">${t[1]}</div><div class="adv-tip-x">${t[2]}</div></div></div>`).join('')}</div>
+  <div class="bk-note" style="padding:6px 20px 0">Analisi indicativa basata sui tuoi dati e su criteri standard di finanza personale (regola 50/30/20, fondo emergenza 3-6 mesi). Non è consulenza finanziaria professionale.</div>
+  `;
+  setTimeout(()=>{const f=document.getElementById('adv-fill');if(f)f.style.strokeDashoffset=off;},120);
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// TASTO INDIETRO ANDROID — non esce dall'app: chiude i pannelli o torna alla Home interna
+// ═══════════════════════════════════════════════════════════════════
+function backHandler(){
+  const ov=document.getElementById('overlay'),dt=document.getElementById('detail'),gm=document.getElementById('goal-modal');
+  if(ov.classList.contains('open')){closeOv();return;}
+  if(dt.classList.contains('open')){closeDetail();return;}
+  if(gm.classList.contains('open')){closeGoal();return;}
+  if(activeTab!=='dash'){goTab('dash');return;}
+  // già sulla Home senza pannelli: non usciamo (solo il tasto Home esce)
+}
+window.addEventListener('popstate',()=>{ history.pushState({app:1},''); backHandler(); });
+
+// ═══════════════════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════════════════
 if('serviceWorker' in navigator)navigator.serviceWorker.register('./sw.js').catch(()=>{});
 seed();
 processRecurring();
 renderDash();
+history.replaceState({app:1},'');
+history.pushState({app:1},'');
 </script>
 </body>
 </html>
